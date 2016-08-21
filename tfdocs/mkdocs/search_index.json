@@ -1,0 +1,44 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "TensorFlow.jl\n\n\nIntroduction\n\n\nTensorFlow.jl is a wrapper around \nTensorFlow\n, a powerful library from Google for implementing state-of-the-art deep-learning models.\n\n\nComparison to Python API\n\n\nThe wrapper sticks closely to the Python API.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#tensorflowjl", 
+            "text": "", 
+            "title": "TensorFlow.jl"
+        }, 
+        {
+            "location": "/#introduction", 
+            "text": "TensorFlow.jl is a wrapper around  TensorFlow , a powerful library from Google for implementing state-of-the-art deep-learning models.", 
+            "title": "Introduction"
+        }, 
+        {
+            "location": "/#comparison-to-python-api", 
+            "text": "The wrapper sticks closely to the Python API.", 
+            "title": "Comparison to Python API"
+        }, 
+        {
+            "location": "/basic_usage/", 
+            "text": "Basic usage\n\n\nusing\n \nTensorFlow\n\n\n\nsess\n \n=\n \nTensorFlow\n.\nSession\n()\n\n\n\nx\n \n=\n \nTensorFlow\n.\nconstant\n(\nFloat64\n[\n1\n,\n2\n])\n\n\ny\n \n=\n \nTensorFlow\n.\nVariable\n(\nFloat64\n[\n3\n,\n4\n])\n\n\nz\n \n=\n \nTensorFlow\n.\nplaceholder\n(\nFloat64\n)\n\n\n\nw\n \n=\n \nexp\n(\nx\n \n+\n \nz\n \n+\n \n-\ny\n)\n\n\n\nrun\n(\nsess\n,\n \nTensorFlow\n.\ninitialize_all_variables\n())\n\n\nres\n \n=\n \nrun\n(\nsess\n,\n \nw\n,\n \nDict\n(\nz\n=\nFloat64\n[\n1\n,\n2\n]))\n\n\n@\ntest\n \nres\n[\n1\n]\n \n\u2248\n \nexp\n(\n-\n1\n)", 
+            "title": "Basic usage"
+        }, 
+        {
+            "location": "/basic_usage/#basic-usage", 
+            "text": "using   TensorFlow  sess   =   TensorFlow . Session ()  x   =   TensorFlow . constant ( Float64 [ 1 , 2 ])  y   =   TensorFlow . Variable ( Float64 [ 3 , 4 ])  z   =   TensorFlow . placeholder ( Float64 )  w   =   exp ( x   +   z   +   - y )  run ( sess ,   TensorFlow . initialize_all_variables ())  res   =   run ( sess ,   w ,   Dict ( z = Float64 [ 1 , 2 ]))  @ test   res [ 1 ]   \u2248   exp ( - 1 )", 
+            "title": "Basic usage"
+        }, 
+        {
+            "location": "/logistic/", 
+            "text": "Logistic regression\n\n\nusing\n \nDistributions\n\n\n\n# Generate some synthetic data\n\n\nx\n \n=\n \nrandn\n(\n100\n,\n \n50\n)\n\n\nw\n \n=\n \nrandn\n(\n50\n,\n \n10\n)\n\n\ny_prob\n \n=\n \nexp\n(\nx\n*\nw\n)\n\n\ny_prob\n \n./=\n \nsum\n(\ny_prob\n,\n2\n)\n\n\n\nfunction\n draw\n(\nprobs\n)\n\n    \ny\n \n=\n \nzeros\n(\nsize\n(\nprobs\n))\n\n    \nfor\n \ni\n \nin\n \n1\n:\nsize\n(\nprobs\n,\n \n1\n)\n\n        \nidx\n \n=\n \nrand\n(\nCategorical\n(\nprobs\n[\ni\n,\n \n:]))\n\n        \ny\n[\ni\n,\n \nidx\n]\n \n=\n \n1\n\n    \nend\n\n    \nreturn\n \ny\n\n\nend\n\n\n\ny\n \n=\n \ndraw\n(\ny_prob\n)\n\n\n\n# Build the model\n\n\nsess\n \n=\n \nSession\n(\nGraph\n())\n\n\nX\n \n=\n \nplaceholder\n(\nFloat64\n)\n\n\nY_obs\n \n=\n \nplaceholder\n(\nFloat64\n)\n\n\n\nvariable_scope\n(\nlogisitic_model\n,\n \ninitializer\n=\nNormal\n(\n0\n,\n \n.\n001\n))\n \ndo\n\n    \nglobal\n \nW\n \n=\n \nget_variable\n(\nweights\n,\n \n[\n50\n,\n \n10\n],\n \nFloat64\n)\n\n    \nglobal\n \nB\n \n=\n \nget_variable\n(\nbias\n,\n \n[\n10\n],\n \nFloat64\n)\n\n\nend\n\n\n\nY\n=\nnn\n.\nsoftmax\n(\nX\n*\nW\n \n+\n \nB\n)\n\n\nLoss\n \n=\n \n-\nreduce_sum\n(\nlog\n(\nY\n)\n.*\nY_obs\n)\n\n\noptimizer\n \n=\n \ntrain\n.\nAdamOptimizer\n()\n\n\nminimize_op\n \n=\n \ntrain\n.\nminimize\n(\noptimizer\n,\n \nLoss\n)\n\n\n\n# Run training\n\n\nrun\n(\nsess\n,\n \ninitialize_all_variables\n())\n\n\n\nfor\n \nepoch\n \nin\n \n1\n:\n100\n\n    \ncur_loss\n,\n \n_\n \n=\n \nrun\n(\nsess\n,\n \nvcat\n(\nLoss\n,\n \nminimize_op\n),\n \nDict\n(\nX\n=\nx\n,\n \nY_obs\n=\ny\n))\n\n    \nprintln\n(@\nsprintf\n(\nCurrent loss is \n%.2f\n.\n,\n \ncur_loss\n))\n\n\nend", 
+            "title": "Logistic regression"
+        }, 
+        {
+            "location": "/logistic/#logistic-regression", 
+            "text": "using   Distributions  # Generate some synthetic data  x   =   randn ( 100 ,   50 )  w   =   randn ( 50 ,   10 )  y_prob   =   exp ( x * w )  y_prob   ./=   sum ( y_prob , 2 )  function  draw ( probs ) \n     y   =   zeros ( size ( probs )) \n     for   i   in   1 : size ( probs ,   1 ) \n         idx   =   rand ( Categorical ( probs [ i ,   :])) \n         y [ i ,   idx ]   =   1 \n     end \n     return   y  end  y   =   draw ( y_prob )  # Build the model  sess   =   Session ( Graph ())  X   =   placeholder ( Float64 )  Y_obs   =   placeholder ( Float64 )  variable_scope ( logisitic_model ,   initializer = Normal ( 0 ,   . 001 ))   do \n     global   W   =   get_variable ( weights ,   [ 50 ,   10 ],   Float64 ) \n     global   B   =   get_variable ( bias ,   [ 10 ],   Float64 )  end  Y = nn . softmax ( X * W   +   B )  Loss   =   - reduce_sum ( log ( Y ) .* Y_obs )  optimizer   =   train . AdamOptimizer ()  minimize_op   =   train . minimize ( optimizer ,   Loss )  # Run training  run ( sess ,   initialize_all_variables ())  for   epoch   in   1 : 100 \n     cur_loss ,   _   =   run ( sess ,   vcat ( Loss ,   minimize_op ),   Dict ( X = x ,   Y_obs = y )) \n     println (@ sprintf ( Current loss is  %.2f . ,   cur_loss ))  end", 
+            "title": "Logistic regression"
+        }
+    ]
+}
