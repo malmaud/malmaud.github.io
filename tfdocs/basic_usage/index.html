@@ -243,15 +243,15 @@
           <h1 id="basic-usage">Basic usage</h1>
 <div class="code"><pre><span></span><span class="k">using</span> <span class="n">TensorFlow</span>
 
-<span class="n">sess</span> <span class="o">=</span> <span class="n">TensorFlow</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
 
-<span class="n">x</span> <span class="o">=</span> <span class="n">TensorFlow</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">TensorFlow</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">TensorFlow</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">constant</span><span class="p">(</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">z</span> <span class="o">+</span> <span class="o">-</span><span class="n">y</span><span class="p">)</span>
 
-<span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">TensorFlow</span><span class="o">.</span><span class="n">initialize_all_variables</span><span class="p">())</span>
+<span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">initialize_all_variables</span><span class="p">())</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">z</span><span class="o">=&gt;</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
 <span class="p">@</span><span class="n">test</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">≈</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>

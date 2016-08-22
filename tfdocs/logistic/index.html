@@ -242,6 +242,7 @@
           
           <h1 id="logistic-regression">Logistic regression</h1>
 <div class="code"><pre><span></span><span class="k">using</span> <span class="n">Distributions</span>
+<span class="k">using</span> <span class="n">TensorFlow</span>
 
 <span class="c"># Generate some synthetic data</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
@@ -261,11 +262,11 @@
 <span class="n">y</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><span class="n">y_prob</span><span class="p">)</span>
 
 <span class="c"># Build the model</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">Graph</span><span class="p">())</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
 <span class="n">Y_obs</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
 
-<span class="n">variable_scope</span><span class="p">(</span><span class="s">&quot;logisitic_model&quot;</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">001</span><span class="p">))</span> <span class="k">do</span>
+<span class="n">variable_scope</span><span class="p">(</span><span class="s">&quot;logistic_model&quot;</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">001</span><span class="p">))</span> <span class="k">do</span>
     <span class="kd">global</span> <span class="n">W</span> <span class="o">=</span> <span class="n">get_variable</span><span class="p">(</span><span class="s">&quot;weights&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">)</span>
     <span class="kd">global</span> <span class="n">B</span> <span class="o">=</span> <span class="n">get_variable</span><span class="p">(</span><span class="s">&quot;bias&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">)</span>
 <span class="k">end</span>

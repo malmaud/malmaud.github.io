@@ -197,6 +197,18 @@
               </a>
             </li>
           
+            <li class="anchor">
+              <a title="What functionality of TensorFlow is exposed" href="#what-functionality-of-tensorflow-is-exposed">
+                What functionality of TensorFlow is exposed
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Limitations" href="#limitations">
+                Limitations
+              </a>
+            </li>
+          
         </ul>
       
     
@@ -256,9 +268,46 @@
           
           <h1 id="tensorflowjl">TensorFlow.jl</h1>
 <h2 id="introduction">Introduction</h2>
-<p>TensorFlow.jl is a wrapper around <a href="https://www.tensorflow.org/">TensorFlow</a>, a powerful library from Google for implementing state-of-the-art deep-learning models.</p>
+<p>TensorFlow.jl is a wrapper around <a href="https://www.tensorflow.org/">TensorFlow</a>, a powerful library from Google for implementing state-of-the-art deep-learning models. See <a href="https://www.tensorflow.org/versions/r0.10/tutorials/mnist/beginners/index.html">the intro tutorial</a> from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials.</p>
 <h2 id="comparison-to-python-api">Comparison to Python API</h2>
-<p>The wrapper sticks closely to the Python API.</p>
+<p>The wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.</p>
+<p>Some differences:</p>
+<ul>
+<li>
+<p>When the Python API uses an object-oriented notation like <code>session.run(node)</code>, the Julia version would be <code>run(session, node)</code>.</p>
+</li>
+<li>
+<p>When the Python API asks for a TensorFlow type such as <code>TensorFloat.float32</code>, instead pass in a native Julia type like <code>Float32</code>.</p>
+</li>
+<li>
+<p>Many basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, <code>sqrt(constant(4.0))</code> will return a <code>Node</code> which, when evaluated, returns <code>2.0</code>.</p>
+</li>
+</ul>
+<h2 id="what-functionality-of-tensorflow-is-exposed">What functionality of TensorFlow is exposed</h2>
+<p>Currently, a large fraction of the computation graph-building functionality is present. This includes</p>
+<ul>
+<li>
+<p>All basic unary and binary mathematical functions, such as <code>sqrt</code>, <code>*</code> (scalar and matrix), etc.</p>
+</li>
+<li>
+<p>The most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.</p>
+</li>
+<li>
+<p>Neural network trainers, such as <code>AdamOptimizer</code>.</p>
+</li>
+<li>
+<p>Basic image-loading and resizing operations</p>
+</li>
+</ul>
+<p>Currently not wrapped, but planned for the near future:</p>
+<ul>
+<li>Distributed graph execution</li>
+<li>Control flow operations (<code>while</code> loops, etc)</li>
+<li>PyBoard graph visualization</li>
+<li>Saving and restoring variables during training</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<p>Since the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request).</p>
           <aside class="copyright" role="note">
             
               Copyright (c) 2016 Jonathan Malmaud &ndash;
