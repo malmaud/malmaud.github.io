@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Logistic regression - TensorFlow.jl</title>
+        <title>Operations - TensorFlow.jl</title>
       
       
       
@@ -95,12 +95,12 @@
           <span class="path">
             
               
-                Examples <i class="icon icon-link"></i>
+                Manual <i class="icon icon-link"></i>
               
             
           </span>
         
-        Logistic regression
+        Operations
       </div>
     </div>
     
@@ -202,9 +202,54 @@
       
         
   <li>
-    <a class="" title="Operations" href="../ops/">
+    <a class="current" title="Operations" href="./">
       Operations
     </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Basic operations" href="#basic-operations">
+                Basic operations
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Variables" href="#variables">
+                Variables
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Reductions" href="#reductions">
+                Reductions
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Control flow" href="#control-flow">
+                Control flow
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Images" href="#images">
+                Images
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Neural networks" href="#neural-networks">
+                Neural networks
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -229,14 +274,9 @@
       
         
   <li>
-    <a class="current" title="Logistic regression" href="./">
+    <a class="" title="Logistic regression" href="../logistic/">
       Logistic regression
     </a>
-    
-      
-        
-      
-      
     
   </li>
 
@@ -278,51 +318,88 @@
       <article class="article">
         <div class="wrapper">
           
-          <p><a id='Logistic-regression-1'></a></p>
-<h1 id="logistic-regression">Logistic regression</h1>
-<div class="code"><pre><span></span><span class="k">using</span> <span class="n">Distributions</span>
+          <p><a id='Operations-1'></a></p>
+<h1 id="operations">Operations</h1>
+<p>See the official TensorFlow documentation for a complete description of these operations.</p>
+<p><a id='Basic-operations-1'></a></p>
+<h2 id="basic-operations">Basic operations</h2>
+<div class="code"><pre><span></span>placeholder
+constant
+concat
+pack
+split
+expand_dims
+argmin
+one_hot
+random_uniform
+</pre></div>
 
-<span class="c"># Generate some synthetic data</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">y_prob</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">w</span><span class="p">)</span>
-<span class="n">y_prob</span> <span class="o">./=</span> <span class="n">sum</span><span class="p">(</span><span class="n">y_prob</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="k">function</span><span class="nf"> draw</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]))</span>
-        <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">end</span>
-    <span class="k">return</span> <span class="n">y</span>
-<span class="k">end</span>
+<p><a id='Variables-1'></a></p>
+<h2 id="variables">Variables</h2>
+<div class="code"><pre><span></span>Variable
+initialize_all_variables
+variable_scope
+get_variable
+ConstantInitializer
+</pre></div>
 
-<span class="n">y</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><span class="n">y_prob</span><span class="p">)</span>
 
-<span class="c"># Build the model</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">Graph</span><span class="p">())</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
-<span class="n">Y_obs</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
+<p><a id='Reductions-1'></a></p>
+<h2 id="reductions">Reductions</h2>
+<div class="code"><pre><span></span>reduce_sum
+reduce_prod
+reduce_min
+reduce_max
+reduce_all
+reduce_any
+reduce_mean
+</pre></div>
 
-<span class="n">variable_scope</span><span class="p">(</span><span class="s">&quot;logisitic_model&quot;</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">001</span><span class="p">))</span> <span class="k">do</span>
-    <span class="kd">global</span> <span class="n">W</span> <span class="o">=</span> <span class="n">get_variable</span><span class="p">(</span><span class="s">&quot;weights&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">)</span>
-    <span class="kd">global</span> <span class="n">B</span> <span class="o">=</span> <span class="n">get_variable</span><span class="p">(</span><span class="s">&quot;bias&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">)</span>
-<span class="k">end</span>
 
-<span class="n">Y</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="n">W</span> <span class="o">+</span> <span class="n">B</span><span class="p">)</span>
-<span class="n">Loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="o">.*</span><span class="n">Y_obs</span><span class="p">)</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">()</span>
-<span class="n">minimize_op</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">Loss</span><span class="p">)</span>
-<span class="n">saver</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
-<span class="c"># Run training</span>
-<span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">initialize_all_variables</span><span class="p">())</span>
-<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">mktempdir</span><span class="p">()</span>
-<span class="n">info</span><span class="p">(</span><span class="s">&quot;Checkpoint files saved in </span><span class="si">$checkpoint_path</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">epoch</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">100</span>
-    <span class="n">cur_loss</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">vcat</span><span class="p">(</span><span class="n">Loss</span><span class="p">,</span> <span class="n">minimize_op</span><span class="p">),</span> <span class="n">Dict</span><span class="p">(</span><span class="n">X</span><span class="o">=&gt;</span><span class="n">x</span><span class="p">,</span> <span class="n">Y_obs</span><span class="o">=&gt;</span><span class="n">y</span><span class="p">))</span>
-    <span class="n">println</span><span class="p">(@</span><span class="n">sprintf</span><span class="p">(</span><span class="s">&quot;Current loss is </span><span class="si">%.2f</span><span class="s">.&quot;</span><span class="p">,</span> <span class="n">cur_loss</span><span class="p">))</span>
-    <span class="n">train</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">saver</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> <span class="s">&quot;logistic&quot;</span><span class="p">),</span> <span class="n">global_step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
-<span class="k">end</span>
+<p><a id='Control-flow-1'></a></p>
+<h2 id="control-flow">Control flow</h2>
+<div class="code"><pre><span></span>equal
+</pre></div>
+
+
+<p><a id='Images-1'></a></p>
+<h2 id="images">Images</h2>
+<div class="code"><pre><span></span>image.decode_jpeg
+image.decode_png
+image.resize_images
+</pre></div>
+
+
+<p><a id='Neural-networks-1'></a></p>
+<h2 id="neural-networks">Neural networks</h2>
+<p><a id='Convolutions-1'></a></p>
+<h3 id="convolutions">Convolutions</h3>
+<div class="code"><pre><span></span>nn.conv2d
+nn.max_pool
+</pre></div>
+
+
+<p><a id='Recurrent-neural-nets-1'></a></p>
+<h3 id="recurrent-neural-nets">Recurrent neural nets</h3>
+<div class="code"><pre><span></span>nn.rnn
+nn.dynamic_rnn
+nn.zero_state
+nn.output_size
+nn.zero_state
+</pre></div>
+
+
+<p><a id='Nonlinearities-1'></a></p>
+<h3 id="nonlinearities">Nonlinearities</h3>
+<div class="code"><pre><span></span>nn.relu
+nn.relu6
+nn.elu
+nn.softplus
+nn.softsign
+nn.softmax
+nn.sigmoid
+nn.tanh
 </pre></div>
           <aside class="copyright" role="note">
             
@@ -342,7 +419,7 @@
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../basic_usage/" title="Basic usage">
+        <a href="../core/" title="Core functions">
           <span class="direction">
             Previous
           </span>
@@ -352,7 +429,7 @@
             </div>
             <div class="stretch">
               <div class="title">
-                Basic usage
+                Core functions
               </div>
             </div>
           </div>
@@ -361,14 +438,14 @@
     </div>
     <div class="next">
       
-        <a href="../tutorial/" title="MNIST tutorial">
+        <a href="../basic_usage/" title="Basic usage">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                MNIST tutorial
+                Basic usage
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

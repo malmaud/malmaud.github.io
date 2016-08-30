@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "TensorFlow.jl\n\n\nIntroduction\n\n\nTensorFlow.jl is a wrapper around \nTensorFlow\n, a powerful library from Google for implementing state-of-the-art deep-learning models. See \nthe intro tutorial\n from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials.\n\n\nComparison to Python API\n\n\nThe wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.\n\n\nSome differences:\n\n\n\n\n\n\nWhen the Python API uses an object-oriented notation like \nsession.run(node)\n, the Julia version would be \nrun(session, node)\n.\n\n\n\n\n\n\nWhen the Python API asks for a TensorFlow type such as \nTensorFloat.float32\n, instead pass in a native Julia type like \nFloat32\n.\n\n\n\n\n\n\nMany basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, \nsqrt(constant(4.0))\n will return a \nNode\n which, when evaluated, returns \n2.0\n.\n\n\n\n\n\n\nWhat functionality of TensorFlow is exposed\n\n\nCurrently, a large fraction of the computation graph-building functionality is present. This includes\n\n\n\n\n\n\nAll basic unary and binary mathematical functions, such as \nsqrt\n, \n*\n (scalar and matrix), etc.\n\n\n\n\n\n\nThe most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.\n\n\n\n\n\n\nNeural network trainers, such as \nAdamOptimizer\n.\n\n\n\n\n\n\nBasic image-loading and resizing operations\n\n\n\n\n\n\nCurrently not wrapped, but planned for the near future:\n\n\n\n\nDistributed graph execution\n\n\nControl flow operations (\nwhile\n loops, etc)\n\n\nPyBoard graph visualization\n\n\nSaving and restoring variables during training\n\n\n\n\nLimitations\n\n\nSince the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request).", 
+            "text": "TensorFlow.jl\n\n\n\n\nIntroduction\n\n\nTensorFlow.jl is a wrapper around \nTensorFlow\n, a powerful library from Google for implementing state-of-the-art deep-learning models. See \nthe intro tutorial\n from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see \nthe Julia equivalent of that tutorial\n.\n\n\n\n\nComparison to Python API\n\n\nThe wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.\n\n\nSome differences:\n\n\n\n\nWhen the Python API uses an object-oriented notation like \nsession.run(node)\n, the Julia version would be \nrun(session, node)\n.\n\n\nWhen the Python API asks for a TensorFlow type such as \nTensorFloat.float32\n, instead pass in a native Julia type like \nFloat32\n.\n\n\nMany basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, \nsqrt(constant(4.0))\n will return a \nOperation\n which, when evaluated, returns \n2.0\n.\n\n\n\n\n\n\nWhat functionality of TensorFlow is exposed\n\n\nCurrently, a large fraction of the computation graph-building functionality is present. This includes\n\n\n\n\nAll basic unary and binary mathematical functions, such as \nsqrt\n, \n*\n (scalar and matrix), etc.\n\n\nThe most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.\n\n\nNeural network trainers, such as \nAdamOptimizer\n.\n\n\nBasic image-loading and resizing operations\n\n\n\n\nCurrently not wrapped, but planned for the near future:\n\n\n\n\nDistributed graph execution\n\n\nControl flow operations (\nwhile\n loops, etc)\n\n\nPyBoard graph visualization\n\n\n\n\n\n\nLimitations\n\n\nSince the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request). Additionally:\n\n\n\n\nThe Python variable checkpointer and Julia checkpointer use different formats for the checkpoint file, since the Python format is proprietary. The TensorFlow developers have stated that they eventually settle on a format and document it, at which point Julia and Python-trained models can share parameters.", 
             "title": "Home"
         }, 
         {
@@ -12,23 +12,98 @@
         }, 
         {
             "location": "/#introduction", 
-            "text": "TensorFlow.jl is a wrapper around  TensorFlow , a powerful library from Google for implementing state-of-the-art deep-learning models. See  the intro tutorial  from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials.", 
+            "text": "TensorFlow.jl is a wrapper around  TensorFlow , a powerful library from Google for implementing state-of-the-art deep-learning models. See  the intro tutorial  from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see  the Julia equivalent of that tutorial .", 
             "title": "Introduction"
         }, 
         {
             "location": "/#comparison-to-python-api", 
-            "text": "The wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.  Some differences:    When the Python API uses an object-oriented notation like  session.run(node) , the Julia version would be  run(session, node) .    When the Python API asks for a TensorFlow type such as  TensorFloat.float32 , instead pass in a native Julia type like  Float32 .    Many basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example,  sqrt(constant(4.0))  will return a  Node  which, when evaluated, returns  2.0 .", 
+            "text": "The wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.  Some differences:   When the Python API uses an object-oriented notation like  session.run(node) , the Julia version would be  run(session, node) .  When the Python API asks for a TensorFlow type such as  TensorFloat.float32 , instead pass in a native Julia type like  Float32 .  Many basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example,  sqrt(constant(4.0))  will return a  Operation  which, when evaluated, returns  2.0 .", 
             "title": "Comparison to Python API"
         }, 
         {
             "location": "/#what-functionality-of-tensorflow-is-exposed", 
-            "text": "Currently, a large fraction of the computation graph-building functionality is present. This includes    All basic unary and binary mathematical functions, such as  sqrt ,  *  (scalar and matrix), etc.    The most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.    Neural network trainers, such as  AdamOptimizer .    Basic image-loading and resizing operations    Currently not wrapped, but planned for the near future:   Distributed graph execution  Control flow operations ( while  loops, etc)  PyBoard graph visualization  Saving and restoring variables during training", 
+            "text": "Currently, a large fraction of the computation graph-building functionality is present. This includes   All basic unary and binary mathematical functions, such as  sqrt ,  *  (scalar and matrix), etc.  The most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.  Neural network trainers, such as  AdamOptimizer .  Basic image-loading and resizing operations   Currently not wrapped, but planned for the near future:   Distributed graph execution  Control flow operations ( while  loops, etc)  PyBoard graph visualization", 
             "title": "What functionality of TensorFlow is exposed"
         }, 
         {
             "location": "/#limitations", 
-            "text": "Since the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request).", 
+            "text": "Since the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request). Additionally:   The Python variable checkpointer and Julia checkpointer use different formats for the checkpoint file, since the Python format is proprietary. The TensorFlow developers have stated that they eventually settle on a format and document it, at which point Julia and Python-trained models can share parameters.", 
             "title": "Limitations"
+        }, 
+        {
+            "location": "/core/", 
+            "text": "Core operations\n\n\n\n\nTypes\n\n\nThe computation graph as a whole is stored in the \nGraph\n type. Individual nodes in the graph are referred to as operations, stored in the \nOperation\n type. Operations can produce one or more outputs, represented as the \nTensor\n type.\n\n\nTensor\nOperation\nSession\nGraph\n\n\n\n\n\n\n\nFunctions\n\n\n#\n\n\nBase.eltype\n \n \nFunction\n.\n\n\neltype(node::AbstractOperation)\n\n\nReturns the type of the tensor the given operation will return when executed.\n\n\n#\n\n\nTensorFlow.node_name\n \n \nFunction\n.\n\n\nnode_name(node::AbstractOperation)\n\n\nReturns the name of a node in the computation graph.\n\n\n#\n\n\nTensorFlow.get_collection\n \n \nFunction\n.\n\n\nReturns a collection attached to the graph \ng\n named \nname\n\n\nReturns a collection from the default graph\n\n\n#\n\n\nTensorFlow.get_def_graph\n \n \nFunction\n.\n\n\nReturns the default computation graph, an object of type \nGraph\n.\n\n\n#\n\n\nBase.run\n \n \nFunction\n.\n\n\nCompute the result of one of more operations in the computation graph.\n\n\n#\n\n\nTensorFlow.get_node_by_name\n \n \nFunction\n.\n\n\nReturns an operation by searching for its name in the given graph.\n\n\n#\n\n\nTensorFlow.get_shape\n \n \nFunction\n.\n\n\nRuns shape inference to return the shape of the tensor produced by the given operation.\n\n\nReturns -1 if shape inference cannot infer a shape.\n\n\nNote this runs \nstatically\n. Use the \nshape\n operation to dynamically get the shape of an operation.\n\n\n#\n\n\nTensorFlow.get_def\n \n \nFunction\n.\n\n\nReturns the definition of the given operation or graph, in returns of its properties with respect to the computation graph.", 
+            "title": "Core functions"
+        }, 
+        {
+            "location": "/core/#core-operations", 
+            "text": "", 
+            "title": "Core operations"
+        }, 
+        {
+            "location": "/core/#types", 
+            "text": "The computation graph as a whole is stored in the  Graph  type. Individual nodes in the graph are referred to as operations, stored in the  Operation  type. Operations can produce one or more outputs, represented as the  Tensor  type.  Tensor\nOperation\nSession\nGraph", 
+            "title": "Types"
+        }, 
+        {
+            "location": "/core/#functions", 
+            "text": "#  Base.eltype     Function .  eltype(node::AbstractOperation)  Returns the type of the tensor the given operation will return when executed.  #  TensorFlow.node_name     Function .  node_name(node::AbstractOperation)  Returns the name of a node in the computation graph.  #  TensorFlow.get_collection     Function .  Returns a collection attached to the graph  g  named  name  Returns a collection from the default graph  #  TensorFlow.get_def_graph     Function .  Returns the default computation graph, an object of type  Graph .  #  Base.run     Function .  Compute the result of one of more operations in the computation graph.  #  TensorFlow.get_node_by_name     Function .  Returns an operation by searching for its name in the given graph.  #  TensorFlow.get_shape     Function .  Runs shape inference to return the shape of the tensor produced by the given operation.  Returns -1 if shape inference cannot infer a shape.  Note this runs  statically . Use the  shape  operation to dynamically get the shape of an operation.  #  TensorFlow.get_def     Function .  Returns the definition of the given operation or graph, in returns of its properties with respect to the computation graph.", 
+            "title": "Functions"
+        }, 
+        {
+            "location": "/ops/", 
+            "text": "Operations\n\n\nSee the official TensorFlow documentation for a complete description of these operations.\n\n\n\n\nBasic operations\n\n\nplaceholder\nconstant\nconcat\npack\nsplit\nexpand_dims\nargmin\none_hot\nrandom_uniform\n\n\n\n\n\n\n\nVariables\n\n\nVariable\ninitialize_all_variables\nvariable_scope\nget_variable\nConstantInitializer\n\n\n\n\n\n\n\nReductions\n\n\nreduce_sum\nreduce_prod\nreduce_min\nreduce_max\nreduce_all\nreduce_any\nreduce_mean\n\n\n\n\n\n\n\nControl flow\n\n\nequal\n\n\n\n\n\n\n\nImages\n\n\nimage.decode_jpeg\nimage.decode_png\nimage.resize_images\n\n\n\n\n\n\n\nNeural networks\n\n\n\n\nConvolutions\n\n\nnn.conv2d\nnn.max_pool\n\n\n\n\n\n\n\nRecurrent neural nets\n\n\nnn.rnn\nnn.dynamic_rnn\nnn.zero_state\nnn.output_size\nnn.zero_state\n\n\n\n\n\n\n\nNonlinearities\n\n\nnn.relu\nnn.relu6\nnn.elu\nnn.softplus\nnn.softsign\nnn.softmax\nnn.sigmoid\nnn.tanh", 
+            "title": "Operations"
+        }, 
+        {
+            "location": "/ops/#operations", 
+            "text": "See the official TensorFlow documentation for a complete description of these operations.", 
+            "title": "Operations"
+        }, 
+        {
+            "location": "/ops/#basic-operations", 
+            "text": "placeholder\nconstant\nconcat\npack\nsplit\nexpand_dims\nargmin\none_hot\nrandom_uniform", 
+            "title": "Basic operations"
+        }, 
+        {
+            "location": "/ops/#variables", 
+            "text": "Variable\ninitialize_all_variables\nvariable_scope\nget_variable\nConstantInitializer", 
+            "title": "Variables"
+        }, 
+        {
+            "location": "/ops/#reductions", 
+            "text": "reduce_sum\nreduce_prod\nreduce_min\nreduce_max\nreduce_all\nreduce_any\nreduce_mean", 
+            "title": "Reductions"
+        }, 
+        {
+            "location": "/ops/#control-flow", 
+            "text": "equal", 
+            "title": "Control flow"
+        }, 
+        {
+            "location": "/ops/#images", 
+            "text": "image.decode_jpeg\nimage.decode_png\nimage.resize_images", 
+            "title": "Images"
+        }, 
+        {
+            "location": "/ops/#neural-networks", 
+            "text": "", 
+            "title": "Neural networks"
+        }, 
+        {
+            "location": "/ops/#convolutions", 
+            "text": "nn.conv2d\nnn.max_pool", 
+            "title": "Convolutions"
+        }, 
+        {
+            "location": "/ops/#recurrent-neural-nets", 
+            "text": "nn.rnn\nnn.dynamic_rnn\nnn.zero_state\nnn.output_size\nnn.zero_state", 
+            "title": "Recurrent neural nets"
+        }, 
+        {
+            "location": "/ops/#nonlinearities", 
+            "text": "nn.relu\nnn.relu6\nnn.elu\nnn.softplus\nnn.softsign\nnn.softmax\nnn.sigmoid\nnn.tanh", 
+            "title": "Nonlinearities"
         }, 
         {
             "location": "/basic_usage/", 
@@ -42,13 +117,68 @@
         }, 
         {
             "location": "/logistic/", 
-            "text": "Logistic regression\n\n\nusing\n \nDistributions\n\n\nusing\n \nTensorFlow\n\n\n\n# Generate some synthetic data\n\n\nx\n \n=\n \nrandn\n(\n100\n,\n \n50\n)\n\n\nw\n \n=\n \nrandn\n(\n50\n,\n \n10\n)\n\n\ny_prob\n \n=\n \nexp\n(\nx\n*\nw\n)\n\n\ny_prob\n \n./=\n \nsum\n(\ny_prob\n,\n2\n)\n\n\n\nfunction\n draw\n(\nprobs\n)\n\n    \ny\n \n=\n \nzeros\n(\nsize\n(\nprobs\n))\n\n    \nfor\n \ni\n \nin\n \n1\n:\nsize\n(\nprobs\n,\n \n1\n)\n\n        \nidx\n \n=\n \nrand\n(\nCategorical\n(\nprobs\n[\ni\n,\n \n:]))\n\n        \ny\n[\ni\n,\n \nidx\n]\n \n=\n \n1\n\n    \nend\n\n    \nreturn\n \ny\n\n\nend\n\n\n\ny\n \n=\n \ndraw\n(\ny_prob\n)\n\n\n\n# Build the model\n\n\nsess\n \n=\n \nSession\n()\n\n\nX\n \n=\n \nplaceholder\n(\nFloat64\n)\n\n\nY_obs\n \n=\n \nplaceholder\n(\nFloat64\n)\n\n\n\nvariable_scope\n(\nlogistic_model\n,\n \ninitializer\n=\nNormal\n(\n0\n,\n \n.\n001\n))\n \ndo\n\n    \nglobal\n \nW\n \n=\n \nget_variable\n(\nweights\n,\n \n[\n50\n,\n \n10\n],\n \nFloat64\n)\n\n    \nglobal\n \nB\n \n=\n \nget_variable\n(\nbias\n,\n \n[\n10\n],\n \nFloat64\n)\n\n\nend\n\n\n\nY\n=\nnn\n.\nsoftmax\n(\nX\n*\nW\n \n+\n \nB\n)\n\n\nLoss\n \n=\n \n-\nreduce_sum\n(\nlog\n(\nY\n)\n.*\nY_obs\n)\n\n\noptimizer\n \n=\n \ntrain\n.\nAdamOptimizer\n()\n\n\nminimize_op\n \n=\n \ntrain\n.\nminimize\n(\noptimizer\n,\n \nLoss\n)\n\n\n\n# Run training\n\n\nrun\n(\nsess\n,\n \ninitialize_all_variables\n())\n\n\n\nfor\n \nepoch\n \nin\n \n1\n:\n100\n\n    \ncur_loss\n,\n \n_\n \n=\n \nrun\n(\nsess\n,\n \nvcat\n(\nLoss\n,\n \nminimize_op\n),\n \nDict\n(\nX\n=\nx\n,\n \nY_obs\n=\ny\n))\n\n    \nprintln\n(@\nsprintf\n(\nCurrent loss is \n%.2f\n.\n,\n \ncur_loss\n))\n\n\nend", 
+            "text": "Logistic regression\n\n\nusing\n \nDistributions\n\n\n\n# Generate some synthetic data\n\n\nx\n \n=\n \nrandn\n(\n100\n,\n \n50\n)\n\n\nw\n \n=\n \nrandn\n(\n50\n,\n \n10\n)\n\n\ny_prob\n \n=\n \nexp\n(\nx\n*\nw\n)\n\n\ny_prob\n \n./=\n \nsum\n(\ny_prob\n,\n2\n)\n\n\n\nfunction\n draw\n(\nprobs\n)\n\n    \ny\n \n=\n \nzeros\n(\nsize\n(\nprobs\n))\n\n    \nfor\n \ni\n \nin\n \n1\n:\nsize\n(\nprobs\n,\n \n1\n)\n\n        \nidx\n \n=\n \nrand\n(\nCategorical\n(\nprobs\n[\ni\n,\n \n:]))\n\n        \ny\n[\ni\n,\n \nidx\n]\n \n=\n \n1\n\n    \nend\n\n    \nreturn\n \ny\n\n\nend\n\n\n\ny\n \n=\n \ndraw\n(\ny_prob\n)\n\n\n\n# Build the model\n\n\nsess\n \n=\n \nSession\n(\nGraph\n())\n\n\nX\n \n=\n \nplaceholder\n(\nFloat64\n)\n\n\nY_obs\n \n=\n \nplaceholder\n(\nFloat64\n)\n\n\n\nvariable_scope\n(\nlogisitic_model\n,\n \ninitializer\n=\nNormal\n(\n0\n,\n \n.\n001\n))\n \ndo\n\n    \nglobal\n \nW\n \n=\n \nget_variable\n(\nweights\n,\n \n[\n50\n,\n \n10\n],\n \nFloat64\n)\n\n    \nglobal\n \nB\n \n=\n \nget_variable\n(\nbias\n,\n \n[\n10\n],\n \nFloat64\n)\n\n\nend\n\n\n\nY\n=\nnn\n.\nsoftmax\n(\nX\n*\nW\n \n+\n \nB\n)\n\n\nLoss\n \n=\n \n-\nreduce_sum\n(\nlog\n(\nY\n)\n.*\nY_obs\n)\n\n\noptimizer\n \n=\n \ntrain\n.\nAdamOptimizer\n()\n\n\nminimize_op\n \n=\n \ntrain\n.\nminimize\n(\noptimizer\n,\n \nLoss\n)\n\n\nsaver\n \n=\n \ntrain\n.\nSaver\n()\n\n\n# Run training\n\n\nrun\n(\nsess\n,\n \ninitialize_all_variables\n())\n\n\ncheckpoint_path\n \n=\n \nmktempdir\n()\n\n\ninfo\n(\nCheckpoint files saved in \n$checkpoint_path\n)\n\n\nfor\n \nepoch\n \nin\n \n1\n:\n100\n\n    \ncur_loss\n,\n \n_\n \n=\n \nrun\n(\nsess\n,\n \nvcat\n(\nLoss\n,\n \nminimize_op\n),\n \nDict\n(\nX\n=\nx\n,\n \nY_obs\n=\ny\n))\n\n    \nprintln\n(@\nsprintf\n(\nCurrent loss is \n%.2f\n.\n,\n \ncur_loss\n))\n\n    \ntrain\n.\nsave\n(\nsaver\n,\n \nsess\n,\n \njoinpath\n(\ncheckpoint_path\n,\n \nlogistic\n),\n \nglobal_step\n=\nepoch\n)\n\n\nend", 
             "title": "Logistic regression"
         }, 
         {
             "location": "/logistic/#logistic-regression", 
-            "text": "using   Distributions  using   TensorFlow  # Generate some synthetic data  x   =   randn ( 100 ,   50 )  w   =   randn ( 50 ,   10 )  y_prob   =   exp ( x * w )  y_prob   ./=   sum ( y_prob , 2 )  function  draw ( probs ) \n     y   =   zeros ( size ( probs )) \n     for   i   in   1 : size ( probs ,   1 ) \n         idx   =   rand ( Categorical ( probs [ i ,   :])) \n         y [ i ,   idx ]   =   1 \n     end \n     return   y  end  y   =   draw ( y_prob )  # Build the model  sess   =   Session ()  X   =   placeholder ( Float64 )  Y_obs   =   placeholder ( Float64 )  variable_scope ( logistic_model ,   initializer = Normal ( 0 ,   . 001 ))   do \n     global   W   =   get_variable ( weights ,   [ 50 ,   10 ],   Float64 ) \n     global   B   =   get_variable ( bias ,   [ 10 ],   Float64 )  end  Y = nn . softmax ( X * W   +   B )  Loss   =   - reduce_sum ( log ( Y ) .* Y_obs )  optimizer   =   train . AdamOptimizer ()  minimize_op   =   train . minimize ( optimizer ,   Loss )  # Run training  run ( sess ,   initialize_all_variables ())  for   epoch   in   1 : 100 \n     cur_loss ,   _   =   run ( sess ,   vcat ( Loss ,   minimize_op ),   Dict ( X = x ,   Y_obs = y )) \n     println (@ sprintf ( Current loss is  %.2f . ,   cur_loss ))  end", 
+            "text": "using   Distributions  # Generate some synthetic data  x   =   randn ( 100 ,   50 )  w   =   randn ( 50 ,   10 )  y_prob   =   exp ( x * w )  y_prob   ./=   sum ( y_prob , 2 )  function  draw ( probs ) \n     y   =   zeros ( size ( probs )) \n     for   i   in   1 : size ( probs ,   1 ) \n         idx   =   rand ( Categorical ( probs [ i ,   :])) \n         y [ i ,   idx ]   =   1 \n     end \n     return   y  end  y   =   draw ( y_prob )  # Build the model  sess   =   Session ( Graph ())  X   =   placeholder ( Float64 )  Y_obs   =   placeholder ( Float64 )  variable_scope ( logisitic_model ,   initializer = Normal ( 0 ,   . 001 ))   do \n     global   W   =   get_variable ( weights ,   [ 50 ,   10 ],   Float64 ) \n     global   B   =   get_variable ( bias ,   [ 10 ],   Float64 )  end  Y = nn . softmax ( X * W   +   B )  Loss   =   - reduce_sum ( log ( Y ) .* Y_obs )  optimizer   =   train . AdamOptimizer ()  minimize_op   =   train . minimize ( optimizer ,   Loss )  saver   =   train . Saver ()  # Run training  run ( sess ,   initialize_all_variables ())  checkpoint_path   =   mktempdir ()  info ( Checkpoint files saved in  $checkpoint_path )  for   epoch   in   1 : 100 \n     cur_loss ,   _   =   run ( sess ,   vcat ( Loss ,   minimize_op ),   Dict ( X = x ,   Y_obs = y )) \n     println (@ sprintf ( Current loss is  %.2f . ,   cur_loss )) \n     train . save ( saver ,   sess ,   joinpath ( checkpoint_path ,   logistic ),   global_step = epoch )  end", 
             "title": "Logistic regression"
+        }, 
+        {
+            "location": "/tutorial/", 
+            "text": "MNIST tutorial\n\n\nThis tutorial is strongly based on the \nofficial TensorFlow MNIST tutorial\n. We will classify MNIST digits, at first using simple logistic regression and then with a deep convolutional model.\n\n\nRead through the official tutorial! Only the differences from the Python version are documented here.\n\n\n\n\nLoad MNIST data\n\n\nThe \nDataLoader\n API provided in \"examples/mnist_loader.jl\" has some simple code for loading the MNIST dataset, based on the MNIST.jl package.\n\n\nloader\n \n=\n \ndata_loader\n()\n\n\n\n\n\n\n\n\nStart TensorFlow session\n\n\nusing\n \nTensorFlow\n\n\nsess\n \n=\n \nSession\n()\n\n\n\n\n\n\n\n\nBuilding a softmax regression model\n\n\n\n\nPlaceholders\n\n\nx\n \n=\n \nplaceholder\n(\nFloat32\n)\n\n\ny\n \n=\n \nplaceholder\n(\nFloat32\n)\n\n\n\n\n\n\n\n\nVariables\n\n\nW\n \n=\n \nVariable\n(\nzeros\n([\n784\n,\n \n10\n]))\n\n\nb\n \n=\n \nVariable\n(\nzeros\n([\n10\n]))\n\n\n\nrun\n(\nsess\n,\n \ninitialize_all_variables\n())\n\n\n\n\n\n\n\n\nPredicted Class and Loss Function\n\n\ny\n \n=\n \nnn\n.\nsoftmax\n(\nx\n*\nW\n \n+\n \nb\n)\n\n\ncross_entropy\n \n=\n \nreduce_mean\n(\n-\nreduce_sum\n(\ny_\n \n.*\n \nlog\n(\ny\n),\n \nreduction_indices\n=\n[\n2\n]))\n\n\n\n\n\n\nNote several differences from the Python version of the tutorial:\n\n\n\n\nPython uses \ntf.matmul\n for matrix multiplication and \n*\n for element-wise multiplication of tensors in the computation graph. Julia uses \n*\n for matrix multiplication and \n.*\n for element-wise multiplication.\n\n\nThe reduction index for the loss term is 1 in the Python version, but the Julia API assumes 1-based indexing to be consistent with the rest of Julia and so 2 is used.\n\n\n\n\n\n\nTrain the model\n\n\ntrain_step\n \n=\n \ntrain\n.\nminimize\n(\ntrain\n.\nGradientDescentOptimizer\n(\n.\n00001\n),\n \ncross_entropy\n)\n\n\nfor\n \ni\n \nin\n \n1\n:\n1000\n\n    \nbatch\n \n=\n \nnext_batch\n(\nloader\n,\n \n100\n)\n\n    \nrun\n(\nsess\n,\n \ntrain_step\n,\n \nDict\n(\nx\n=\nbatch\n[\n1\n],\n \ny_\n=\nbatch\n[\n2\n]))\n\n\nend\n\n\n\n\n\n\n\n\nEvaluate the model\n\n\ncorrect_prediction\n \n=\n \nindmax\n(\ny\n,\n \n2\n)\n \n.==\n \nindmax\n(\ny_\n,\n \n2\n)\n\n\naccuracy\n=\nreduce_mean\n(\ncast\n(\ncorrect_prediction\n,\n \nFloat32\n))\n\n\ntestx\n,\n \ntesty\n \n=\n \nload_test_set\n()\n\n\n\nprintln\n(\nrun\n(\nsess\n,\n \naccuracy\n,\n \nDict\n(\nx\n=\ntestx\n,\n \ny_\n=\ntesty\n)))\n\n\n\n\n\n\n\n\nBuild a multi-layer convolutional network\n\n\nThere are no significant differences from the Python version, so the entire code is presented here:\n\n\n# using TensorFlow\n\n\nusing\n \nDistributions\n\n\ninclude\n(\nmnist_loader.jl\n)\n\n\n\nloader\n \n=\n \nDataLoader\n()\n\n\n\nsession\n \n=\n \nSession\n(\nGraph\n())\n\n\n\nfunction\n weight_variable\n(\nshape\n)\n\n    \ninitial\n \n=\n \nmap\n(\nFloat32\n,\n \nrand\n(\nNormal\n(\n0\n,\n \n.\n001\n),\n \nshape\n...\n))\n\n    \nreturn\n \nVariable\n(\ninitial\n)\n\n\nend\n\n\n\nfunction\n bias_variable\n(\nshape\n)\n\n    \ninitial\n \n=\n \nfill\n(\nFloat32\n(\n.\n1\n),\n \nshape\n...\n)\n\n    \nreturn\n \nVariable\n(\ninitial\n)\n\n\nend\n\n\n\nfunction\n conv2d\n(\nx\n,\n \nW\n)\n\n    \nnn\n.\nconv2d\n(\nx\n,\n \nW\n,\n \n[\n1\n,\n \n1\n,\n \n1\n,\n \n1\n],\n \nSAME\n)\n\n\nend\n\n\n\nfunction\n max_pool_2x2\n(\nx\n)\n\n    \nnn\n.\nmax_pool\n(\nx\n,\n \n[\n1\n,\n \n2\n,\n \n2\n,\n \n1\n],\n \n[\n1\n,\n \n2\n,\n \n2\n,\n \n1\n],\n \nSAME\n)\n\n\nend\n\n\n\nx\n \n=\n \nplaceholder\n(\nFloat32\n)\n\n\ny_\n \n=\n \nplaceholder\n(\nFloat32\n)\n\n\n\nW_conv1\n \n=\n \nweight_variable\n([\n5\n,\n \n5\n,\n \n1\n,\n \n32\n])\n\n\nb_conv1\n \n=\n \nbias_variable\n([\n32\n])\n\n\n\nx_image\n \n=\n \nreshape\n(\nx\n,\n \n[\n-\n1\n,\n \n28\n,\n \n28\n,\n \n1\n])\n\n\n\nh_conv1\n \n=\n \nnn\n.\nrelu\n(\nconv2d\n(\nx_image\n,\n \nW_conv1\n)\n \n+\n \nb_conv1\n)\n\n\nh_pool1\n \n=\n \nmax_pool_2x2\n(\nh_conv1\n)\n\n\n\nW_conv2\n \n=\n \nweight_variable\n([\n5\n,\n \n5\n,\n \n32\n,\n \n64\n])\n\n\nb_conv2\n \n=\n \nbias_variable\n([\n64\n])\n\n\n\nh_conv2\n \n=\n \nnn\n.\nrelu\n(\nconv2d\n(\nh_pool1\n,\n \nW_conv2\n)\n \n+\n \nb_conv2\n)\n\n\nh_pool2\n \n=\n \nmax_pool_2x2\n(\nh_conv2\n)\n\n\n\nW_fc1\n \n=\n \nweight_variable\n([\n7\n*\n7\n*\n64\n,\n \n1024\n])\n\n\nb_fc1\n \n=\n \nbias_variable\n([\n1024\n])\n\n\n\nh_pool2_flat\n \n=\n \nreshape\n(\nh_pool2\n,\n \n[\n-\n1\n,\n \n7\n*\n7\n*\n64\n])\n\n\nh_fc1\n \n=\n \nnn\n.\nrelu\n(\nh_pool2_flat\n \n*\n \nW_fc1\n \n+\n \nb_fc1\n)\n\n\n\nkeep_prob\n \n=\n \nplaceholder\n(\nFloat32\n)\n\n\nh_fc1_drop\n \n=\n \nnn\n.\ndropout\n(\nh_fc1\n,\n \nkeep_prob\n)\n\n\n\nW_fc2\n \n=\n \nweight_variable\n([\n1024\n,\n \n10\n])\n\n\nb_fc2\n \n=\n \nbias_variable\n([\n10\n])\n\n\n\ny_conv\n \n=\n \nnn\n.\nsoftmax\n(\nh_fc1_drop\n \n*\n \nW_fc2\n \n+\n \nb_fc2\n)\n\n\n\ncross_entropy\n \n=\n \nreduce_mean\n(\n-\nreduce_sum\n(\ny_\n.*\nlog\n(\ny_conv\n),\n \nreduction_indices\n=\n[\n2\n]))\n\n\n\ntrain_step\n \n=\n \ntrain\n.\nminimize\n(\ntrain\n.\nAdamOptimizer\n(\n1e-4\n),\n \ncross_entropy\n)\n\n\n\ncorrect_prediction\n \n=\n \nindmax\n(\ny_conv\n,\n \n2\n)\n \n.==\n \nindmax\n(\ny_\n,\n \n2\n)\n\n\n\naccuracy\n \n=\n \nreduce_mean\n(\ncast\n(\ncorrect_prediction\n,\n \nFloat32\n))\n\n\n\nrun\n(\nsession\n,\n \ninitialize_all_variables\n())\n\n\n\nfor\n \ni\n \nin\n \n1\n:\n1000\n\n    \nbatch\n \n=\n \nnext_batch\n(\nloader\n,\n \n50\n)\n\n    \nif\n \ni\n%\n100\n \n==\n \n1\n\n        \ntrain_accuracy\n \n=\n \nrun\n(\nsession\n,\n \naccuracy\n,\n \nDict\n(\nx\n=\nbatch\n[\n1\n],\n \ny_\n=\nbatch\n[\n2\n],\n \nkeep_prob\n=\n1.0\n))\n\n        \ninfo\n(\nstep \n$i\n, training accuracy \n$train_accuracy\n)\n\n    \nend\n\n    \nrun\n(\nsession\n,\n \ntrain_step\n,\n \nDict\n(\nx\n=\nbatch\n[\n1\n],\n \ny_\n=\nbatch\n[\n2\n],\n \nkeep_prob\n=\n.\n5\n))\n\n\nend\n\n\n\ntestx\n,\n \ntesty\n \n=\n \nload_test_set\n()\n\n\ntest_accuracy\n \n=\n \nrun\n(\nsession\n,\n \naccuracy\n,\n \nDict\n(\nx\n=\ntestx\n,\n \ny_\n=\ntesty\n,\n \nkeep_prob\n=\n1.0\n))\n\n\ninfo\n(\ntest accuracy \n$test_accuracy\n)", 
+            "title": "MNIST tutorial"
+        }, 
+        {
+            "location": "/tutorial/#mnist-tutorial", 
+            "text": "This tutorial is strongly based on the  official TensorFlow MNIST tutorial . We will classify MNIST digits, at first using simple logistic regression and then with a deep convolutional model.  Read through the official tutorial! Only the differences from the Python version are documented here.", 
+            "title": "MNIST tutorial"
+        }, 
+        {
+            "location": "/tutorial/#load-mnist-data", 
+            "text": "The  DataLoader  API provided in \"examples/mnist_loader.jl\" has some simple code for loading the MNIST dataset, based on the MNIST.jl package.  loader   =   data_loader ()", 
+            "title": "Load MNIST data"
+        }, 
+        {
+            "location": "/tutorial/#start-tensorflow-session", 
+            "text": "using   TensorFlow  sess   =   Session ()", 
+            "title": "Start TensorFlow session"
+        }, 
+        {
+            "location": "/tutorial/#building-a-softmax-regression-model", 
+            "text": "", 
+            "title": "Building a softmax regression model"
+        }, 
+        {
+            "location": "/tutorial/#placeholders", 
+            "text": "x   =   placeholder ( Float32 )  y   =   placeholder ( Float32 )", 
+            "title": "Placeholders"
+        }, 
+        {
+            "location": "/tutorial/#variables", 
+            "text": "W   =   Variable ( zeros ([ 784 ,   10 ]))  b   =   Variable ( zeros ([ 10 ]))  run ( sess ,   initialize_all_variables ())", 
+            "title": "Variables"
+        }, 
+        {
+            "location": "/tutorial/#predicted-class-and-loss-function", 
+            "text": "y   =   nn . softmax ( x * W   +   b )  cross_entropy   =   reduce_mean ( - reduce_sum ( y_   .*   log ( y ),   reduction_indices = [ 2 ]))   Note several differences from the Python version of the tutorial:   Python uses  tf.matmul  for matrix multiplication and  *  for element-wise multiplication of tensors in the computation graph. Julia uses  *  for matrix multiplication and  .*  for element-wise multiplication.  The reduction index for the loss term is 1 in the Python version, but the Julia API assumes 1-based indexing to be consistent with the rest of Julia and so 2 is used.", 
+            "title": "Predicted Class and Loss Function"
+        }, 
+        {
+            "location": "/tutorial/#train-the-model", 
+            "text": "train_step   =   train . minimize ( train . GradientDescentOptimizer ( . 00001 ),   cross_entropy )  for   i   in   1 : 1000 \n     batch   =   next_batch ( loader ,   100 ) \n     run ( sess ,   train_step ,   Dict ( x = batch [ 1 ],   y_ = batch [ 2 ]))  end", 
+            "title": "Train the model"
+        }, 
+        {
+            "location": "/tutorial/#evaluate-the-model", 
+            "text": "correct_prediction   =   indmax ( y ,   2 )   .==   indmax ( y_ ,   2 )  accuracy = reduce_mean ( cast ( correct_prediction ,   Float32 ))  testx ,   testy   =   load_test_set ()  println ( run ( sess ,   accuracy ,   Dict ( x = testx ,   y_ = testy )))", 
+            "title": "Evaluate the model"
+        }, 
+        {
+            "location": "/tutorial/#build-a-multi-layer-convolutional-network", 
+            "text": "There are no significant differences from the Python version, so the entire code is presented here:  # using TensorFlow  using   Distributions  include ( mnist_loader.jl )  loader   =   DataLoader ()  session   =   Session ( Graph ())  function  weight_variable ( shape ) \n     initial   =   map ( Float32 ,   rand ( Normal ( 0 ,   . 001 ),   shape ... )) \n     return   Variable ( initial )  end  function  bias_variable ( shape ) \n     initial   =   fill ( Float32 ( . 1 ),   shape ... ) \n     return   Variable ( initial )  end  function  conv2d ( x ,   W ) \n     nn . conv2d ( x ,   W ,   [ 1 ,   1 ,   1 ,   1 ],   SAME )  end  function  max_pool_2x2 ( x ) \n     nn . max_pool ( x ,   [ 1 ,   2 ,   2 ,   1 ],   [ 1 ,   2 ,   2 ,   1 ],   SAME )  end  x   =   placeholder ( Float32 )  y_   =   placeholder ( Float32 )  W_conv1   =   weight_variable ([ 5 ,   5 ,   1 ,   32 ])  b_conv1   =   bias_variable ([ 32 ])  x_image   =   reshape ( x ,   [ - 1 ,   28 ,   28 ,   1 ])  h_conv1   =   nn . relu ( conv2d ( x_image ,   W_conv1 )   +   b_conv1 )  h_pool1   =   max_pool_2x2 ( h_conv1 )  W_conv2   =   weight_variable ([ 5 ,   5 ,   32 ,   64 ])  b_conv2   =   bias_variable ([ 64 ])  h_conv2   =   nn . relu ( conv2d ( h_pool1 ,   W_conv2 )   +   b_conv2 )  h_pool2   =   max_pool_2x2 ( h_conv2 )  W_fc1   =   weight_variable ([ 7 * 7 * 64 ,   1024 ])  b_fc1   =   bias_variable ([ 1024 ])  h_pool2_flat   =   reshape ( h_pool2 ,   [ - 1 ,   7 * 7 * 64 ])  h_fc1   =   nn . relu ( h_pool2_flat   *   W_fc1   +   b_fc1 )  keep_prob   =   placeholder ( Float32 )  h_fc1_drop   =   nn . dropout ( h_fc1 ,   keep_prob )  W_fc2   =   weight_variable ([ 1024 ,   10 ])  b_fc2   =   bias_variable ([ 10 ])  y_conv   =   nn . softmax ( h_fc1_drop   *   W_fc2   +   b_fc2 )  cross_entropy   =   reduce_mean ( - reduce_sum ( y_ .* log ( y_conv ),   reduction_indices = [ 2 ]))  train_step   =   train . minimize ( train . AdamOptimizer ( 1e-4 ),   cross_entropy )  correct_prediction   =   indmax ( y_conv ,   2 )   .==   indmax ( y_ ,   2 )  accuracy   =   reduce_mean ( cast ( correct_prediction ,   Float32 ))  run ( session ,   initialize_all_variables ())  for   i   in   1 : 1000 \n     batch   =   next_batch ( loader ,   50 ) \n     if   i % 100   ==   1 \n         train_accuracy   =   run ( session ,   accuracy ,   Dict ( x = batch [ 1 ],   y_ = batch [ 2 ],   keep_prob = 1.0 )) \n         info ( step  $i , training accuracy  $train_accuracy ) \n     end \n     run ( session ,   train_step ,   Dict ( x = batch [ 1 ],   y_ = batch [ 2 ],   keep_prob = . 5 ))  end  testx ,   testy   =   load_test_set ()  test_accuracy   =   run ( session ,   accuracy ,   Dict ( x = testx ,   y_ = testy ,   keep_prob = 1.0 ))  info ( test accuracy  $test_accuracy )", 
+            "title": "Build a multi-layer convolutional network"
         }
     ]
 }

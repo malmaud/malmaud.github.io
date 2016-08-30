@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>MNIST tutorial - TensorFlow.jl</title>
+      
+      
+      
+      
+        <meta name="author" content="Jon Malmaud">
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="TensorFlow.jl">
+    <meta property="og:image" content="None/../images/logo.png">
+    <meta name="apple-mobile-web-app-title" content="TensorFlow.jl">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+      <link rel="apple-touch-icon" href="../images/logo.png">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../assets/fonts/icon.eot?52m981');
+      	src: url('../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+      <link rel="stylesheet" href="../assets/Documenter.css">
+    
+    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class=" ">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+              
+                Examples <i class="icon icon-link"></i>
+              
+            
+          </span>
+        
+        MNIST tutorial
+      </div>
+    </div>
+    
+    
+      
+      <div class="button button-github" role="button" aria-label="GitHub">
+        <a href="https://github.com/malmaud" title="@malmaud on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+      </div>
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/malmaud/TensorFlow.jl" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="../images/logo.png">
+        </div>
+      
+      <div class="name">
+        <strong>
+          TensorFlow.jl
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+          <br>
+          malmaud/TensorFlow.jl
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/malmaud/TensorFlow.jl/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/malmaud/TensorFlow.jl/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Home" href="..">
+      Home
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Manual</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Core functions" href="../core/">
+      Core functions
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Operations" href="../ops/">
+      Operations
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+            
+  <li>
+    <span class="section">Examples</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Basic usage" href="../basic_usage/">
+      Basic usage
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Logistic regression" href="../logistic/">
+      Logistic regression
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="current" title="MNIST tutorial" href="./">
+      MNIST tutorial
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Load MNIST data" href="#load-mnist-data">
+                Load MNIST data
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Start TensorFlow session" href="#start-tensorflow-session">
+                Start TensorFlow session
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Building a softmax regression model" href="#building-a-softmax-regression-model">
+                Building a softmax regression model
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Build a multi-layer convolutional network" href="#build-a-multi-layer-convolutional-network">
+                Build a multi-layer convolutional network
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+        </ul>
+        
+          <hr>
+          <span class="section">The author</span>
+          <ul>
+            
+            
+              
+              <li>
+                <a href="https://github.com/malmaud" target="_blank" title="@malmaud on GitHub">
+                  @malmaud on GitHub
+                </a>
+              </li>
+            
+          </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <p><a id='MNIST-tutorial-1'></a></p>
+<h1 id="mnist-tutorial">MNIST tutorial</h1>
+<p>This tutorial is strongly based on the <a href="https://www.tensorflow.org/versions/r0.10/tutorials/mnist/pros/index.html">official TensorFlow MNIST tutorial</a>. We will classify MNIST digits, at first using simple logistic regression and then with a deep convolutional model.</p>
+<p>Read through the official tutorial! Only the differences from the Python version are documented here.</p>
+<p><a id='Load-MNIST-data-1'></a></p>
+<h2 id="load-mnist-data">Load MNIST data</h2>
+<p>The <code>DataLoader</code> API provided in "examples/mnist_loader.jl" has some simple code for loading the MNIST dataset, based on the MNIST.jl package.</p>
+<div class="code"><pre><span></span><span class="n">loader</span> <span class="o">=</span> <span class="n">data_loader</span><span class="p">()</span>
+</pre></div>
+
+
+<p><a id='Start-TensorFlow-session-1'></a></p>
+<h2 id="start-tensorflow-session">Start TensorFlow session</h2>
+<div class="code"><pre><span></span><span class="k">using</span> <span class="n">TensorFlow</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+</pre></div>
+
+
+<p><a id='Building-a-softmax-regression-model-1'></a></p>
+<h2 id="building-a-softmax-regression-model">Building a softmax regression model</h2>
+<p><a id='Placeholders-1'></a></p>
+<h3 id="placeholders">Placeholders</h3>
+<div class="code"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float32</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a id='Variables-1'></a></p>
+<h3 id="variables">Variables</h3>
+<div class="code"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">zeros</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">10</span><span class="p">]))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">zeros</span><span class="p">([</span><span class="mi">10</span><span class="p">]))</span>
+
+<span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">initialize_all_variables</span><span class="p">())</span>
+</pre></div>
+
+
+<p><a id='Predicted-Class-and-Loss-Function-1'></a></p>
+<h3 id="predicted-class-and-loss-function">Predicted Class and Loss Function</h3>
+<div class="code"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">W</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">reduce_mean</span><span class="p">(</span><span class="o">-</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">y_</span> <span class="o">.*</span> <span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">reduction_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+</pre></div>
+
+
+<p>Note several differences from the Python version of the tutorial:</p>
+<ul>
+<li>Python uses <code>tf.matmul</code> for matrix multiplication and <code>*</code> for element-wise multiplication of tensors in the computation graph. Julia uses <code>*</code> for matrix multiplication and <code>.*</code> for element-wise multiplication.</li>
+<li>The reduction index for the loss term is 1 in the Python version, but the Julia API assumes 1-based indexing to be consistent with the rest of Julia and so 2 is used.</li>
+</ul>
+<p><a id='Train-the-model-1'></a></p>
+<h3 id="train-the-model">Train the model</h3>
+<div class="code"><pre><span></span><span class="n">train_step</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="o">.</span><span class="mi">00001</span><span class="p">),</span> <span class="n">cross_entropy</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">1000</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">next_batch</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">train_step</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">x</span><span class="o">=&gt;</span><span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y_</span><span class="o">=&gt;</span><span class="n">batch</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p><a id='Evaluate-the-model-1'></a></p>
+<h3 id="evaluate-the-model">Evaluate the model</h3>
+<div class="code"><pre><span></span><span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">indmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.==</span> <span class="n">indmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">accuracy</span><span class="o">=</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="kt">Float32</span><span class="p">))</span>
+<span class="n">testx</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">load_test_set</span><span class="p">()</span>
+
+<span class="n">println</span><span class="p">(</span><span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">x</span><span class="o">=&gt;</span><span class="n">testx</span><span class="p">,</span> <span class="n">y_</span><span class="o">=&gt;</span><span class="n">testy</span><span class="p">)))</span>
+</pre></div>
+
+
+<p><a id='Build-a-multi-layer-convolutional-network-1'></a></p>
+<h2 id="build-a-multi-layer-convolutional-network">Build a multi-layer convolutional network</h2>
+<p>There are no significant differences from the Python version, so the entire code is presented here:</p>
+<div class="code"><pre><span></span><span class="c"># using TensorFlow</span>
+<span class="k">using</span> <span class="n">Distributions</span>
+<span class="n">include</span><span class="p">(</span><span class="s">&quot;mnist_loader.jl&quot;</span><span class="p">)</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">Graph</span><span class="p">())</span>
+
+<span class="k">function</span><span class="nf"> weight_variable</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="kt">Float32</span><span class="p">,</span> <span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">001</span><span class="p">),</span> <span class="n">shape</span><span class="o">...</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="nf"> bias_variable</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="n">fill</span><span class="p">(</span><span class="kt">Float32</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">shape</span><span class="o">...</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="nf"> conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s">&quot;SAME&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="nf"> max_pool_2x2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s">&quot;SAME&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float32</span><span class="p">)</span>
+<span class="n">y_</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float32</span><span class="p">)</span>
+
+<span class="n">W_conv1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">])</span>
+<span class="n">b_conv1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">32</span><span class="p">])</span>
+
+<span class="n">x_image</span> <span class="o">=</span> <span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">h_conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x_image</span><span class="p">,</span> <span class="n">W_conv1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_conv1</span><span class="p">)</span>
+<span class="n">h_pool1</span> <span class="o">=</span> <span class="n">max_pool_2x2</span><span class="p">(</span><span class="n">h_conv1</span><span class="p">)</span>
+
+<span class="n">W_conv2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">])</span>
+<span class="n">b_conv2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">64</span><span class="p">])</span>
+
+<span class="n">h_conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv2d</span><span class="p">(</span><span class="n">h_pool1</span><span class="p">,</span> <span class="n">W_conv2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_conv2</span><span class="p">)</span>
+<span class="n">h_pool2</span> <span class="o">=</span> <span class="n">max_pool_2x2</span><span class="p">(</span><span class="n">h_conv2</span><span class="p">)</span>
+
+<span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+<span class="n">b_fc1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">])</span>
+
+<span class="n">h_pool2_flat</span> <span class="o">=</span> <span class="n">reshape</span><span class="p">(</span><span class="n">h_pool2</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">])</span>
+<span class="n">h_fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h_pool2_flat</span> <span class="o">*</span> <span class="n">W_fc1</span> <span class="o">+</span> <span class="n">b_fc1</span><span class="p">)</span>
+
+<span class="n">keep_prob</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float32</span><span class="p">)</span>
+<span class="n">h_fc1_drop</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">h_fc1</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
+
+<span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">b_fc2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="n">y_conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">h_fc1_drop</span> <span class="o">*</span> <span class="n">W_fc2</span> <span class="o">+</span> <span class="n">b_fc2</span><span class="p">)</span>
+
+<span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">reduce_mean</span><span class="p">(</span><span class="o">-</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">y_</span><span class="o">.*</span><span class="n">log</span><span class="p">(</span><span class="n">y_conv</span><span class="p">),</span> <span class="n">reduction_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+<span class="n">train_step</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">),</span> <span class="n">cross_entropy</span><span class="p">)</span>
+
+<span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">indmax</span><span class="p">(</span><span class="n">y_conv</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.==</span> <span class="n">indmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">reduce_mean</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="kt">Float32</span><span class="p">))</span>
+
+<span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">initialize_all_variables</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">1000</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">next_batch</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">100</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">x</span><span class="o">=&gt;</span><span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y_</span><span class="o">=&gt;</span><span class="n">batch</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">keep_prob</span><span class="o">=&gt;</span><span class="mf">1.0</span><span class="p">))</span>
+        <span class="n">info</span><span class="p">(</span><span class="s">&quot;step </span><span class="si">$i</span><span class="s">, training accuracy </span><span class="si">$train_accuracy</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">train_step</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">x</span><span class="o">=&gt;</span><span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y_</span><span class="o">=&gt;</span><span class="n">batch</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">keep_prob</span><span class="o">=&gt;.</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">end</span>
+
+<span class="n">testx</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">load_test_set</span><span class="p">()</span>
+<span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">x</span><span class="o">=&gt;</span><span class="n">testx</span><span class="p">,</span> <span class="n">y_</span><span class="o">=&gt;</span><span class="n">testy</span><span class="p">,</span> <span class="n">keep_prob</span><span class="o">=&gt;</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="n">info</span><span class="p">(</span><span class="s">&quot;test accuracy </span><span class="si">$test_accuracy</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+          <aside class="copyright" role="note">
+            
+              Copyright (c) 2016 Jonathan Malmaud &ndash;
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../logistic/" title="Logistic regression">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                Logistic regression
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '..';
+      var repo_id  = 'malmaud/TensorFlow.jl';
+    </script>
+    <script src="../assets/javascripts/application-997097ee0c.js"></script>
+    
+      <script src="../assets/mathjaxhelper.js"></script>
+    
+    
+      <script>
+        (function(i,s,o,g,r,a,m){
+          i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||
+          []).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+          m.parentNode.insertBefore(a,m)
+        })(window, document,
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        /* General initialization */
+        ga('create', 'UA-1123761-11', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+        /* Track outbound links */
+        var buttons = document.querySelectorAll('a');
+        Array.prototype.map.call(buttons, function(item) {
+          if (item.host != document.location.host) {
+            item.addEventListener('click', function() {
+              var action = item.getAttribute('data-action') || 'follow';
+              ga('send', 'event', 'outbound', action, item.href);
+            });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
+          }
+        });
+      </script>
+    
+  </body>
+</html>

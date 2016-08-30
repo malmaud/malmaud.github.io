@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Logistic regression - TensorFlow.jl</title>
+        <title>Core functions - TensorFlow.jl</title>
       
       
       
@@ -95,12 +95,12 @@
           <span class="path">
             
               
-                Examples <i class="icon icon-link"></i>
+                Manual <i class="icon icon-link"></i>
               
             
           </span>
         
-        Logistic regression
+        Core functions
       </div>
     </div>
     
@@ -193,9 +193,30 @@
       
         
   <li>
-    <a class="" title="Core functions" href="../core/">
+    <a class="current" title="Core functions" href="./">
       Core functions
     </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Types" href="#types">
+                Types
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Functions" href="#functions">
+                Functions
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -229,14 +250,9 @@
       
         
   <li>
-    <a class="current" title="Logistic regression" href="./">
+    <a class="" title="Logistic regression" href="../logistic/">
       Logistic regression
     </a>
-    
-      
-        
-      
-      
     
   </li>
 
@@ -278,52 +294,49 @@
       <article class="article">
         <div class="wrapper">
           
-          <p><a id='Logistic-regression-1'></a></p>
-<h1 id="logistic-regression">Logistic regression</h1>
-<div class="code"><pre><span></span><span class="k">using</span> <span class="n">Distributions</span>
-
-<span class="c"># Generate some synthetic data</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">y_prob</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">w</span><span class="p">)</span>
-<span class="n">y_prob</span> <span class="o">./=</span> <span class="n">sum</span><span class="p">(</span><span class="n">y_prob</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="k">function</span><span class="nf"> draw</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">Categorical</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]))</span>
-        <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">end</span>
-    <span class="k">return</span> <span class="n">y</span>
-<span class="k">end</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><span class="n">y_prob</span><span class="p">)</span>
-
-<span class="c"># Build the model</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">Graph</span><span class="p">())</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
-<span class="n">Y_obs</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
-
-<span class="n">variable_scope</span><span class="p">(</span><span class="s">&quot;logisitic_model&quot;</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">001</span><span class="p">))</span> <span class="k">do</span>
-    <span class="kd">global</span> <span class="n">W</span> <span class="o">=</span> <span class="n">get_variable</span><span class="p">(</span><span class="s">&quot;weights&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">)</span>
-    <span class="kd">global</span> <span class="n">B</span> <span class="o">=</span> <span class="n">get_variable</span><span class="p">(</span><span class="s">&quot;bias&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="kt">Float64</span><span class="p">)</span>
-<span class="k">end</span>
-
-<span class="n">Y</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="n">W</span> <span class="o">+</span> <span class="n">B</span><span class="p">)</span>
-<span class="n">Loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="o">.*</span><span class="n">Y_obs</span><span class="p">)</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">()</span>
-<span class="n">minimize_op</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">Loss</span><span class="p">)</span>
-<span class="n">saver</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
-<span class="c"># Run training</span>
-<span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">initialize_all_variables</span><span class="p">())</span>
-<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">mktempdir</span><span class="p">()</span>
-<span class="n">info</span><span class="p">(</span><span class="s">&quot;Checkpoint files saved in </span><span class="si">$checkpoint_path</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">epoch</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">100</span>
-    <span class="n">cur_loss</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">vcat</span><span class="p">(</span><span class="n">Loss</span><span class="p">,</span> <span class="n">minimize_op</span><span class="p">),</span> <span class="n">Dict</span><span class="p">(</span><span class="n">X</span><span class="o">=&gt;</span><span class="n">x</span><span class="p">,</span> <span class="n">Y_obs</span><span class="o">=&gt;</span><span class="n">y</span><span class="p">))</span>
-    <span class="n">println</span><span class="p">(@</span><span class="n">sprintf</span><span class="p">(</span><span class="s">&quot;Current loss is </span><span class="si">%.2f</span><span class="s">.&quot;</span><span class="p">,</span> <span class="n">cur_loss</span><span class="p">))</span>
-    <span class="n">train</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">saver</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> <span class="s">&quot;logistic&quot;</span><span class="p">),</span> <span class="n">global_step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
-<span class="k">end</span>
+          <p><a id='Core-operations-1'></a></p>
+<h1 id="core-operations">Core operations</h1>
+<p><a id='Types-1'></a></p>
+<h2 id="types">Types</h2>
+<p>The computation graph as a whole is stored in the <code>Graph</code> type. Individual nodes in the graph are referred to as operations, stored in the <code>Operation</code> type. Operations can produce one or more outputs, represented as the <code>Tensor</code> type.</p>
+<div class="code"><pre><span></span>Tensor
+Operation
+Session
+Graph
 </pre></div>
+
+
+<p><a id='Functions-1'></a></p>
+<h2 id="functions">Functions</h2>
+<p><a id='Base.eltype' href='#Base.eltype'>#</a>
+<strong><code>Base.eltype</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>eltype(node::AbstractOperation)</code></p>
+<p>Returns the type of the tensor the given operation will return when executed.</p>
+<p><a id='TensorFlow.node_name' href='#TensorFlow.node_name'>#</a>
+<strong><code>TensorFlow.node_name</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>node_name(node::AbstractOperation)</code></p>
+<p>Returns the name of a node in the computation graph.</p>
+<p><a id='TensorFlow.get_collection' href='#TensorFlow.get_collection'>#</a>
+<strong><code>TensorFlow.get_collection</code></strong> &mdash; <em>Function</em>.</p>
+<p>Returns a collection attached to the graph <code>g</code> named <code>name</code></p>
+<p>Returns a collection from the default graph</p>
+<p><a id='TensorFlow.get_def_graph' href='#TensorFlow.get_def_graph'>#</a>
+<strong><code>TensorFlow.get_def_graph</code></strong> &mdash; <em>Function</em>.</p>
+<p>Returns the default computation graph, an object of type <code>Graph</code>.</p>
+<p><a id='Base.run' href='#Base.run'>#</a>
+<strong><code>Base.run</code></strong> &mdash; <em>Function</em>.</p>
+<p>Compute the result of one of more operations in the computation graph.</p>
+<p><a id='TensorFlow.get_node_by_name' href='#TensorFlow.get_node_by_name'>#</a>
+<strong><code>TensorFlow.get_node_by_name</code></strong> &mdash; <em>Function</em>.</p>
+<p>Returns an operation by searching for its name in the given graph.</p>
+<p><a id='TensorFlow.get_shape' href='#TensorFlow.get_shape'>#</a>
+<strong><code>TensorFlow.get_shape</code></strong> &mdash; <em>Function</em>.</p>
+<p>Runs shape inference to return the shape of the tensor produced by the given operation.</p>
+<p>Returns -1 if shape inference cannot infer a shape.</p>
+<p>Note this runs <em>statically</em>. Use the <code>shape</code> operation to dynamically get the shape of an operation.</p>
+<p><a id='TensorFlow.get_def' href='#TensorFlow.get_def'>#</a>
+<strong><code>TensorFlow.get_def</code></strong> &mdash; <em>Function</em>.</p>
+<p>Returns the definition of the given operation or graph, in returns of its properties with respect to the computation graph.</p>
           <aside class="copyright" role="note">
             
               Copyright (c) 2016 Jonathan Malmaud &ndash;
@@ -342,7 +355,7 @@
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../basic_usage/" title="Basic usage">
+        <a href=".." title="Home">
           <span class="direction">
             Previous
           </span>
@@ -352,7 +365,7 @@
             </div>
             <div class="stretch">
               <div class="title">
-                Basic usage
+                Home
               </div>
             </div>
           </div>
@@ -361,14 +374,14 @@
     </div>
     <div class="next">
       
-        <a href="../tutorial/" title="MNIST tutorial">
+        <a href="../ops/" title="Operations">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                MNIST tutorial
+                Operations
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

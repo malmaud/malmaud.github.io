@@ -64,6 +64,8 @@
       </style>
     
     
+      <link rel="stylesheet" href="./assets/Documenter.css">
+    
     <script src="./assets/javascripts/modernizr-4ab42b99fd.js"></script>
     
   </head>
@@ -217,6 +219,33 @@
           
             
   <li>
+    <span class="section">Manual</span>
+    <ul>
+      
+        
+  <li>
+    <a class="" title="Core functions" href="core/">
+      Core functions
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="Operations" href="ops/">
+      Operations
+    </a>
+    
+  </li>
+
+      
+    </ul>
+  </li>
+
+          
+            
+  <li>
     <span class="section">Examples</span>
     <ul>
       
@@ -233,6 +262,15 @@
   <li>
     <a class="" title="Logistic regression" href="logistic/">
       Logistic regression
+    </a>
+    
+  </li>
+
+      
+        
+  <li>
+    <a class="" title="MNIST tutorial" href="tutorial/">
+      MNIST tutorial
     </a>
     
   </li>
@@ -266,48 +304,41 @@
       <article class="article">
         <div class="wrapper">
           
-          <h1 id="tensorflowjl">TensorFlow.jl</h1>
+          <p><a id='TensorFlow.jl-1'></a></p>
+<h1 id="tensorflowjl">TensorFlow.jl</h1>
+<p><a id='Introduction-1'></a></p>
 <h2 id="introduction">Introduction</h2>
-<p>TensorFlow.jl is a wrapper around <a href="https://www.tensorflow.org/">TensorFlow</a>, a powerful library from Google for implementing state-of-the-art deep-learning models. See <a href="https://www.tensorflow.org/versions/r0.10/tutorials/mnist/beginners/index.html">the intro tutorial</a> from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials.</p>
+<p>TensorFlow.jl is a wrapper around <a href="https://www.tensorflow.org/">TensorFlow</a>, a powerful library from Google for implementing state-of-the-art deep-learning models. See <a href="https://www.tensorflow.org/versions/r0.10/tutorials/mnist/beginners/index.html">the intro tutorial</a> from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see <a href="tutorial/">the Julia equivalent of that tutorial</a>.</p>
+<p><a id='Comparison-to-Python-API-1'></a></p>
 <h2 id="comparison-to-python-api">Comparison to Python API</h2>
 <p>The wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.</p>
 <p>Some differences:</p>
 <ul>
-<li>
-<p>When the Python API uses an object-oriented notation like <code>session.run(node)</code>, the Julia version would be <code>run(session, node)</code>.</p>
-</li>
-<li>
-<p>When the Python API asks for a TensorFlow type such as <code>TensorFloat.float32</code>, instead pass in a native Julia type like <code>Float32</code>.</p>
-</li>
-<li>
-<p>Many basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, <code>sqrt(constant(4.0))</code> will return a <code>Node</code> which, when evaluated, returns <code>2.0</code>.</p>
-</li>
+<li>When the Python API uses an object-oriented notation like <code>session.run(node)</code>, the Julia version would be <code>run(session, node)</code>.</li>
+<li>When the Python API asks for a TensorFlow type such as <code>TensorFloat.float32</code>, instead pass in a native Julia type like <code>Float32</code>.</li>
+<li>Many basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, <code>sqrt(constant(4.0))</code> will return a <code>Operation</code> which, when evaluated, returns <code>2.0</code>.</li>
 </ul>
+<p><a id='What-functionality-of-TensorFlow-is-exposed-1'></a></p>
 <h2 id="what-functionality-of-tensorflow-is-exposed">What functionality of TensorFlow is exposed</h2>
 <p>Currently, a large fraction of the computation graph-building functionality is present. This includes</p>
 <ul>
-<li>
-<p>All basic unary and binary mathematical functions, such as <code>sqrt</code>, <code>*</code> (scalar and matrix), etc.</p>
-</li>
-<li>
-<p>The most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.</p>
-</li>
-<li>
-<p>Neural network trainers, such as <code>AdamOptimizer</code>.</p>
-</li>
-<li>
-<p>Basic image-loading and resizing operations</p>
-</li>
+<li>All basic unary and binary mathematical functions, such as <code>sqrt</code>, <code>*</code> (scalar and matrix), etc.</li>
+<li>The most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.</li>
+<li>Neural network trainers, such as <code>AdamOptimizer</code>.</li>
+<li>Basic image-loading and resizing operations</li>
 </ul>
 <p>Currently not wrapped, but planned for the near future:</p>
 <ul>
 <li>Distributed graph execution</li>
 <li>Control flow operations (<code>while</code> loops, etc)</li>
 <li>PyBoard graph visualization</li>
-<li>Saving and restoring variables during training</li>
 </ul>
+<p><a id='Limitations-1'></a></p>
 <h2 id="limitations">Limitations</h2>
-<p>Since the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request).</p>
+<p>Since the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request). Additionally:</p>
+<ul>
+<li>The Python variable checkpointer and Julia checkpointer use different formats for the checkpoint file, since the Python format is proprietary. The TensorFlow developers have stated that they eventually settle on a format and document it, at which point Julia and Python-trained models can share parameters.</li>
+</ul>
           <aside class="copyright" role="note">
             
               Copyright (c) 2016 Jonathan Malmaud &ndash;
@@ -329,14 +360,14 @@
     </div>
     <div class="next">
       
-        <a href="basic_usage/" title="Basic usage">
+        <a href="core/" title="Core functions">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Basic usage
+                Core functions
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">
@@ -366,6 +397,8 @@
       var repo_id  = 'malmaud/TensorFlow.jl';
     </script>
     <script src="./assets/javascripts/application-997097ee0c.js"></script>
+    
+      <script src="./assets/mathjaxhelper.js"></script>
     
     
       <script>
