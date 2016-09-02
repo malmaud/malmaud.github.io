@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "TensorFlow.jl\n\n\n\n\nIntroduction\n\n\nTensorFlow.jl is a wrapper around \nTensorFlow\n, a powerful library from Google for implementing state-of-the-art deep-learning models. See \nthe intro tutorial\n from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see \nthe Julia equivalent of that tutorial\n.\n\n\n\n\nComparison to Python API\n\n\nThe wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.\n\n\nSome differences:\n\n\n\n\nWhen the Python API uses an object-oriented notation like \nsession.run(node)\n, the Julia version would be \nrun(session, node)\n.\n\n\nWhen the Python API asks for a TensorFlow type such as \nTensorFloat.float32\n, instead pass in a native Julia type like \nFloat32\n.\n\n\nMany basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, \nsqrt(constant(4.0))\n will return a \nOperation\n which, when evaluated, returns \n2.0\n.\n\n\n\n\n\n\nWhat functionality of TensorFlow is exposed\n\n\nCurrently, a large fraction of the computation graph-building functionality is present. This includes\n\n\n\n\nAll basic unary and binary mathematical functions, such as \nsqrt\n, \n*\n (scalar and matrix), etc.\n\n\nThe most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.\n\n\nNeural network trainers, such as \nAdamOptimizer\n.\n\n\nBasic image-loading and resizing operations\n\n\n\n\nCurrently not wrapped, but planned for the near future:\n\n\n\n\nDistributed graph execution\n\n\nControl flow operations (\nwhile\n loops, etc)\n\n\nPyBoard graph visualization\n\n\n\n\n\n\nLimitations\n\n\nSince the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request). Additionally:\n\n\n\n\nThe Python variable checkpointer and Julia checkpointer use different formats for the checkpoint file, since the Python format is proprietary. The TensorFlow developers have stated that they eventually settle on a format and document it, at which point Julia and Python-trained models can share parameters.", 
+            "text": "TensorFlow.jl\n\n\n\n\nIntroduction\n\n\nTensorFlow.jl is a wrapper around \nTensorFlow\n, a powerful library from Google for implementing state-of-the-art deep-learning models. See \nthe intro tutorial\n from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see \nthe Julia equivalent of that tutorial\n.\n\n\n\n\nInstallation\n\n\nInstall via\n\n\nPkg\n.\nadd\n(\nTensorFlow\n)\n\n\n\n\n\n\nTo enable support for GPU usage (Linux only), set an environment variable \nTF_USE_GPU\n to \"1\" and then rebuild the package. eg\n\n\nENV\n[\nTF_USE_GPU\n]\n \n=\n \n1\n\n\nPkg\n.\nbuild\n(\nTensorFlow\n)\n\n\n\n\n\n\nCUDA 7.5 and cudnn are required for GPU usage.\n\n\n\n\nComparison to Python API\n\n\nThe wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.\n\n\nSome differences:\n\n\n\n\nWhen the Python API uses an object-oriented notation like \nsession.run(node)\n, the Julia version would be \nrun(session, node)\n.\n\n\nWhen the Python API asks for a TensorFlow type such as \nTensorFloat.float32\n, instead pass in a native Julia type like \nFloat32\n.\n\n\nMany basic Julia mathematical functions are extended to take a TensorFlow node and return another node representing the delayed execution of that function. For example, \nsqrt(constant(4.0))\n will return a \nOperation\n which, when evaluated, returns \n2.0\n.\n\n\n\n\n\n\nWhat functionality of TensorFlow is exposed\n\n\nCurrently, a large fraction of the computation graph-building functionality is present. This includes\n\n\n\n\nAll basic unary and binary mathematical functions, such as \nsqrt\n, \n*\n (scalar and matrix), etc.\n\n\nThe most frequently used neural network operations, including convolution, recurrent neural networks with GRU cells, and dropout.\n\n\nNeural network trainers, such as \nAdamOptimizer\n.\n\n\nBasic image-loading and resizing operations\n\n\n\n\nCurrently not wrapped, but planned for the near future:\n\n\n\n\nDistributed graph execution\n\n\nControl flow operations (\nwhile\n loops, etc)\n\n\nPyBoard graph visualization\n\n\n\n\n\n\nLimitations\n\n\nSince the TensorFlow API is so large, not everything is currently wrapped. If you come across TensorFlow functionality provided by the Python API not available in the Julia API, please file an issue (or even better, submit a pull request). Additionally:\n\n\n\n\nThe Python variable checkpointer and Julia checkpointer use different formats for the checkpoint file, since the Python format is proprietary. The TensorFlow developers have stated that they eventually settle on a format and document it, at which point Julia and Python-trained models can share parameters.", 
             "title": "Home"
         }, 
         {
@@ -14,6 +14,11 @@
             "location": "/#introduction", 
             "text": "TensorFlow.jl is a wrapper around  TensorFlow , a powerful library from Google for implementing state-of-the-art deep-learning models. See  the intro tutorial  from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see  the Julia equivalent of that tutorial .", 
             "title": "Introduction"
+        }, 
+        {
+            "location": "/#installation", 
+            "text": "Install via  Pkg . add ( TensorFlow )   To enable support for GPU usage (Linux only), set an environment variable  TF_USE_GPU  to \"1\" and then rebuild the package. eg  ENV [ TF_USE_GPU ]   =   1  Pkg . build ( TensorFlow )   CUDA 7.5 and cudnn are required for GPU usage.", 
+            "title": "Installation"
         }, 
         {
             "location": "/#comparison-to-python-api", 
@@ -52,7 +57,7 @@
         }, 
         {
             "location": "/ops/", 
-            "text": "Operations\n\n\nSee the official TensorFlow documentation for a complete description of these operations.\n\n\n\n\nBasic operations\n\n\nplaceholder\nconstant\nconcat\npack\nsplit\nexpand_dims\nargmin\none_hot\nrandom_uniform\n\n\n\n\n\n\n\nVariables\n\n\nVariable\ninitialize_all_variables\nvariable_scope\nget_variable\nConstantInitializer\n\n\n\n\n\n\n\nReductions\n\n\nreduce_sum\nreduce_prod\nreduce_min\nreduce_max\nreduce_all\nreduce_any\nreduce_mean\n\n\n\n\n\n\n\nControl flow\n\n\nequal\n\n\n\n\n\n\n\nImages\n\n\nimage.decode_jpeg\nimage.decode_png\nimage.resize_images\n\n\n\n\n\n\n\nNeural networks\n\n\n\n\nConvolutions\n\n\nnn.conv2d\nnn.max_pool\n\n\n\n\n\n\n\nRecurrent neural nets\n\n\nnn.rnn\nnn.dynamic_rnn\nnn.zero_state\nnn.output_size\nnn.zero_state\n\n\n\n\n\n\n\nNonlinearities\n\n\nnn.relu\nnn.relu6\nnn.elu\nnn.softplus\nnn.softsign\nnn.softmax\nnn.sigmoid\nnn.tanh", 
+            "text": "Operations\n\n\nSee the official TensorFlow documentation for a complete description of these operations.\n\n\n\n\nBasic operations\n\n\nplaceholder\nconstant\nconcat\npack\nsplit\nexpand_dims\nargmin\none_hot\nrandom_uniform\n\n\n\n\n\n\n\nVariables\n\n\nVariable\ninitialize_all_variables\nvariable_scope\nget_variable\nConstantInitializer\n\n\n\n\n\n\n\nReductions\n\n\nreduce_sum\nreduce_prod\nreduce_min\nreduce_max\nreduce_all\nreduce_any\nreduce_mean\n\n\n\n\n\n\n\nComparisons\n\n\nequal\nnot_equal\nless\nless_equal\ngreater\ngreater_equal\nselect\nwhere\n\n\n\n\n\n\n\nImages\n\n\nimage.decode_jpeg\nimage.decode_png\nimage.resize_images\n\n\n\n\n\n\n\nNeural networks\n\n\n\n\nConvolutions\n\n\nnn.conv2d\nnn.max_pool\n\n\n\n\n\n\n\nEmbeddings\n\n\nembedding_lookup\n\n\n\n\n\n\n\nRecurrent neural nets\n\n\nnn.rnn\nnn.dynamic_rnn\nnn.zero_state\nnn.output_size\nnn.zero_state\n\n\n\n\n\n\n\nNonlinearities\n\n\nnn.relu\nnn.relu6\nnn.elu\nnn.softplus\nnn.softsign\nnn.softmax\nnn.sigmoid\nnn.tanh\n\n\n\n\n\n\n\nLosses\n\n\nnn.l2_loss\n\n\n\n\n\n\n\nRegularizations\n\n\nnn.dropout\n\n\n\n\n\n\n\nLogic\n\n\nlogical_and\nlogical_not\nlogical_or\nlogical_xor\n\n\n\n\n\n\n\nControl flow\n\n\nidentity\nmake_tuple\ngroup\nno_op\ncond", 
             "title": "Operations"
         }, 
         {
@@ -76,9 +81,9 @@
             "title": "Reductions"
         }, 
         {
-            "location": "/ops/#control-flow", 
-            "text": "equal", 
-            "title": "Control flow"
+            "location": "/ops/#comparisons", 
+            "text": "equal\nnot_equal\nless\nless_equal\ngreater\ngreater_equal\nselect\nwhere", 
+            "title": "Comparisons"
         }, 
         {
             "location": "/ops/#images", 
@@ -96,6 +101,11 @@
             "title": "Convolutions"
         }, 
         {
+            "location": "/ops/#embeddings", 
+            "text": "embedding_lookup", 
+            "title": "Embeddings"
+        }, 
+        {
             "location": "/ops/#recurrent-neural-nets", 
             "text": "nn.rnn\nnn.dynamic_rnn\nnn.zero_state\nnn.output_size\nnn.zero_state", 
             "title": "Recurrent neural nets"
@@ -104,6 +114,26 @@
             "location": "/ops/#nonlinearities", 
             "text": "nn.relu\nnn.relu6\nnn.elu\nnn.softplus\nnn.softsign\nnn.softmax\nnn.sigmoid\nnn.tanh", 
             "title": "Nonlinearities"
+        }, 
+        {
+            "location": "/ops/#losses", 
+            "text": "nn.l2_loss", 
+            "title": "Losses"
+        }, 
+        {
+            "location": "/ops/#regularizations", 
+            "text": "nn.dropout", 
+            "title": "Regularizations"
+        }, 
+        {
+            "location": "/ops/#logic", 
+            "text": "logical_and\nlogical_not\nlogical_or\nlogical_xor", 
+            "title": "Logic"
+        }, 
+        {
+            "location": "/ops/#control-flow", 
+            "text": "identity\nmake_tuple\ngroup\nno_op\ncond", 
+            "title": "Control flow"
         }, 
         {
             "location": "/basic_usage/", 

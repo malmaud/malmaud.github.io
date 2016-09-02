@@ -194,6 +194,12 @@
             </li>
           
             <li class="anchor">
+              <a title="Installation" href="#installation">
+                Installation
+              </a>
+            </li>
+          
+            <li class="anchor">
               <a title="Comparison to Python API" href="#comparison-to-python-api">
                 Comparison to Python API
               </a>
@@ -309,6 +315,20 @@
 <p><a id='Introduction-1'></a></p>
 <h2 id="introduction">Introduction</h2>
 <p>TensorFlow.jl is a wrapper around <a href="https://www.tensorflow.org/">TensorFlow</a>, a powerful library from Google for implementing state-of-the-art deep-learning models. See <a href="https://www.tensorflow.org/versions/r0.10/tutorials/mnist/beginners/index.html">the intro tutorial</a> from Google to get a sense of how TensorFlow works - TensorFlow.jl has a similar API to the Python TensorFlow API described in the tutorials. Then see <a href="tutorial/">the Julia equivalent of that tutorial</a>.</p>
+<p><a id='Installation-1'></a></p>
+<h2 id="installation">Installation</h2>
+<p>Install via</p>
+<div class="code"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;TensorFlow&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>To enable support for GPU usage (Linux only), set an environment variable <code>TF_USE_GPU</code> to "1" and then rebuild the package. eg</p>
+<div class="code"><pre><span></span><span class="n">ENV</span><span class="p">[</span><span class="s">&quot;TF_USE_GPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;1&quot;</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s">&quot;TensorFlow&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>CUDA 7.5 and cudnn are required for GPU usage.</p>
 <p><a id='Comparison-to-Python-API-1'></a></p>
 <h2 id="comparison-to-python-api">Comparison to Python API</h2>
 <p>The wrapper sticks closely to the Python API and so should be easy to pick up for anyone used to the Python API to pick up. Most function names and arguments are semantically the same.</p>
