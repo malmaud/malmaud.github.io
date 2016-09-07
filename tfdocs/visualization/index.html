@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Core functions - TensorFlow.jl</title>
+        <title>Visualizing with Tensorboard - TensorFlow.jl</title>
       
       
       
@@ -95,12 +95,12 @@
           <span class="path">
             
               
-                Reference <i class="icon icon-link"></i>
+                Manual <i class="icon icon-link"></i>
               
             
           </span>
         
-        Core functions
+        Visualizing with Tensorboard
       </div>
     </div>
     
@@ -202,9 +202,24 @@
       
         
   <li>
-    <a class="" title="Visualizing with Tensorboard" href="../visualization/">
+    <a class="current" title="Visualizing with Tensorboard" href="./">
       Visualizing with Tensorboard
     </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Example" href="#example">
+                Example
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -220,30 +235,9 @@
       
         
   <li>
-    <a class="current" title="Core functions" href="./">
+    <a class="" title="Core functions" href="../core/">
       Core functions
     </a>
-    
-      
-        
-      
-      
-        <ul>
-          
-            <li class="anchor">
-              <a title="Types" href="#types">
-                Types
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Functions" href="#functions">
-                Functions
-              </a>
-            </li>
-          
-        </ul>
-      
     
   </li>
 
@@ -312,49 +306,47 @@
       <article class="article">
         <div class="wrapper">
           
-          <p><a id='Core-operations-1'></a></p>
-<h1 id="core-operations">Core operations</h1>
-<p><a id='Types-1'></a></p>
-<h2 id="types">Types</h2>
-<p>The computation graph as a whole is stored in the <code>Graph</code> type. Individual nodes in the graph are referred to as operations, stored in the <code>Operation</code> type. Operations can produce one or more outputs, represented as the <code>Tensor</code> type.</p>
-<div class="code"><pre><span></span>Tensor
-Operation
-Session
-Graph
+          <p><a id='Visualizing-learning-with-Tensorboard-1'></a></p>
+<h1 id="visualizing-learning-with-tensorboard">Visualizing learning with Tensorboard</h1>
+<p>You can visualize your graph structure and various learning-related statistics using Google's Tensorboard tool. <a href="https://www.tensorflow.org/versions/r0.10/how_tos/summaries_and_tensorboard/index.html">Read its documentation</a> to get a sense of how it works. Note that TensorFlow.jl does <em>not</em> come with Tensorboard - it comes with the Python TensorFlow package.</p>
+<p>Write out summary statistics to a file using the <code>SummaryWriter</code> type, which works in the same way as the Python version. Generate the summaries using the summary operations:</p>
+<div class="code"><pre><span></span>scalar_summary
+histogram_summary
+image_summary
+merge_summary
+merge_all_summaries
 </pre></div>
 
 
-<p><a id='Functions-1'></a></p>
-<h2 id="functions">Functions</h2>
-<p><a id='Base.eltype' href='#Base.eltype'>#</a>
-<strong><code>Base.eltype</code></strong> &mdash; <em>Function</em>.</p>
-<p><code>eltype(node::AbstractOperation)</code></p>
-<p>Returns the type of the tensor the given operation will return when executed.</p>
-<p><a id='TensorFlow.node_name' href='#TensorFlow.node_name'>#</a>
-<strong><code>TensorFlow.node_name</code></strong> &mdash; <em>Function</em>.</p>
-<p><code>node_name(node::AbstractOperation)</code></p>
-<p>Returns the name of a node in the computation graph.</p>
-<p><a id='TensorFlow.get_collection' href='#TensorFlow.get_collection'>#</a>
-<strong><code>TensorFlow.get_collection</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns a collection attached to the graph <code>g</code> named <code>name</code></p>
-<p>Returns a collection from the default graph</p>
-<p><a id='TensorFlow.get_def_graph' href='#TensorFlow.get_def_graph'>#</a>
-<strong><code>TensorFlow.get_def_graph</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns the default computation graph, an object of type <code>Graph</code>.</p>
-<p><a id='Base.run' href='#Base.run'>#</a>
-<strong><code>Base.run</code></strong> &mdash; <em>Function</em>.</p>
-<p>Compute the result of one of more operations in the computation graph.</p>
-<p><a id='TensorFlow.get_node_by_name' href='#TensorFlow.get_node_by_name'>#</a>
-<strong><code>TensorFlow.get_node_by_name</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns an operation by searching for its name in the given graph.</p>
-<p><a id='TensorFlow.get_shape' href='#TensorFlow.get_shape'>#</a>
-<strong><code>TensorFlow.get_shape</code></strong> &mdash; <em>Function</em>.</p>
-<p>Runs shape inference to return the shape of the tensor produced by the given operation.</p>
-<p>Returns -1 if shape inference cannot infer a shape.</p>
-<p>Note this runs <em>statically</em>. Use the <code>shape</code> operation to dynamically get the shape of an operation.</p>
-<p><a id='TensorFlow.get_def' href='#TensorFlow.get_def'>#</a>
-<strong><code>TensorFlow.get_def</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns the definition of the given operation or graph</p>
+<p><a id='Example-1'></a></p>
+<h2 id="example">Example</h2>
+<p>On the training side, your code will look like this</p>
+<div class="code"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float32</span><span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="o">...</span> <span class="c"># Set up the rest of your model</span>
+
+<span class="c"># Generate some summary operations</span>
+<span class="n">alpha_summmary</span> <span class="o">=</span> <span class="n">scalar_summary</span><span class="p">(</span><span class="s">&quot;Learning rate&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+<span class="n">weight_summary</span> <span class="o">=</span> <span class="n">histogram_summary</span><span class="p">(</span><span class="s">&quot;Parameters&quot;</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="n">merged_summary_op</span> <span class="o">=</span> <span class="n">merge_all_summaries</span><span class="p">()</span>
+
+<span class="c"># Create a summary writer</span>
+<span class="n">summary_writer</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">SummaryWriter</span><span class="p">(</span><span class="s">&quot;/my_log_dir&quot;</span><span class="p">)</span>
+
+<span class="c"># Train</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">num_epochs</span>
+  <span class="o">...</span> <span class="c"># Run training</span>
+  <span class="n">summaries</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">merged_summary_op</span><span class="p">)</span>
+  <span class="n">write</span><span class="p">(</span><span class="n">summary_writer</span><span class="p">,</span> <span class="n">summaries</span><span class="p">,</span> <span class="n">global_step</span> <span class="o">=</span> <span class="n">epoch</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>Then from the console, run</p>
+<div class="code"><pre><span></span>&gt; tensorboard --log_dir=/my_log_dir
+</pre></div>
           <aside class="copyright" role="note">
             
               Copyright (c) 2016 Jonathan Malmaud &ndash;
@@ -373,7 +365,7 @@ Graph
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../visualization/" title="Visualizing with Tensorboard">
+        <a href="../tutorial/" title="MNIST tutorial">
           <span class="direction">
             Previous
           </span>
@@ -383,7 +375,7 @@ Graph
             </div>
             <div class="stretch">
               <div class="title">
-                Visualizing with Tensorboard
+                MNIST tutorial
               </div>
             </div>
           </div>
@@ -392,14 +384,14 @@ Graph
     </div>
     <div class="next">
       
-        <a href="../ops/" title="Operations">
+        <a href="../core/" title="Core functions">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Operations
+                Core functions
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

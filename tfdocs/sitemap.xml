@@ -4,7 +4,7 @@
     
     <url>
      <loc>None/</loc>
-     <lastmod>2016-09-02</lastmod>
+     <lastmod>2016-09-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,14 +12,30 @@
     
         
     <url>
+     <loc>None/tutorial/</loc>
+     <lastmod>2016-09-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/visualization/</loc>
+     <lastmod>2016-09-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
      <loc>None/core/</loc>
-     <lastmod>2016-09-02</lastmod>
+     <lastmod>2016-09-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/ops/</loc>
-     <lastmod>2016-09-02</lastmod>
+     <lastmod>2016-09-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -29,19 +45,13 @@
         
     <url>
      <loc>None/basic_usage/</loc>
-     <lastmod>2016-09-02</lastmod>
+     <lastmod>2016-09-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/logistic/</loc>
-     <lastmod>2016-09-02</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/tutorial/</loc>
-     <lastmod>2016-09-02</lastmod>
+     <lastmod>2016-09-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
