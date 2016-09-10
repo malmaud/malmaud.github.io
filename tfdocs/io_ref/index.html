@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Core functions - TensorFlow.jl</title>
+        <title>IO pipelines with queues - TensorFlow.jl</title>
       
       
       
@@ -100,7 +100,7 @@
             
           </span>
         
-        Core functions
+        IO pipelines with queues
       </div>
     </div>
     
@@ -229,30 +229,9 @@
       
         
   <li>
-    <a class="current" title="Core functions" href="./">
+    <a class="" title="Core functions" href="../core/">
       Core functions
     </a>
-    
-      
-        
-      
-      
-        <ul>
-          
-            <li class="anchor">
-              <a title="Types" href="#types">
-                Types
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Functions" href="#functions">
-                Functions
-              </a>
-            </li>
-          
-        </ul>
-      
     
   </li>
 
@@ -268,9 +247,30 @@
       
         
   <li>
-    <a class="" title="IO pipelines with queues" href="../io_ref/">
+    <a class="current" title="IO pipelines with queues" href="./">
       IO pipelines with queues
     </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Pipeline functions" href="#pipeline-functions">
+                Pipeline functions
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Readers" href="#readers">
+                Readers
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -330,56 +330,57 @@
       <article class="article">
         <div class="wrapper">
           
-          <p><a id='Core-operations-1'></a></p>
-<h1 id="core-operations">Core operations</h1>
-<p><a id='Types-1'></a></p>
-<h2 id="types">Types</h2>
-<p>The computation graph as a whole is stored in the <code>Graph</code> type. Individual nodes in the graph are referred to as operations, stored in the <code>Operation</code> type. Operations can produce one or more outputs, represented as the <code>Tensor</code> type.</p>
-<div class="code"><pre><span></span>Tensor
-Operation
-Session
-Graph
+          <p><a id='IO-1'></a></p>
+<h1 id="io">IO</h1>
+<p><a id='Pipeline-functions-1'></a></p>
+<h2 id="pipeline-functions">Pipeline functions</h2>
+<p><a id='TensorFlow.train.add_queue_runner' href='#TensorFlow.train.add_queue_runner'>#</a>
+<strong><code>TensorFlow.train.add_queue_runner</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>add_queue_runner(runner::QueueRunner)</code></p>
+<p>Manually adds a queue runner to the graph's collection of queue runners. All runners in the collection will be executed in parallel when <code>start_queue_runners</code> is invoked.</p>
+<p><a id='TensorFlow.train.start_queue_runners' href='#TensorFlow.train.start_queue_runners'>#</a>
+<strong><code>TensorFlow.train.start_queue_runners</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>start_queue_runners(session::Session)</code></p>
+<p>Run all queue runners in parallel that were previously added to the graph's collection of queue runners via <code>add_queue_runner</code>.</p>
+<p>Args:</p>
+<ul>
+<li>session: The TensorFlow session containing the queues</li>
+</ul>
+<p><a id='TensorFlow.train.range_input_producer' href='#TensorFlow.train.range_input_producer'>#</a>
+<strong><code>TensorFlow.train.range_input_producer</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>range_input_producer(limit; num_epochs=nothing, do_shuffle=true, seed=0, capacity=32)</code></p>
+<p>Produces the integers from 1 to <code>limit</code> in a queue.</p>
+<p>Args:</p>
+<ul>
+<li>limit: Inclusive upper bound on the endpoint of the range of integers to produce</li>
+<li>num_epochs: Number of times to produce the integers.</li>
+<li>do_shuffle</li>
+<li>seed</li>
+<li>capacity</li>
+</ul>
+<p><a id='TensorFlow.train.input_producer' href='#TensorFlow.train.input_producer'>#</a>
+<strong><code>TensorFlow.train.input_producer</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>input_producer(input; element_shape=nothing, num_epochs=nothing, do_shuffle=true, seed=0, capacity=32)</code></p>
+<p><a id='TensorFlow.train.string_input_producer' href='#TensorFlow.train.string_input_producer'>#</a>
+<strong><code>TensorFlow.train.string_input_producer</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>string_input_producer(string_tensors; num_epochs=nothing, do_shuffle=true, seed=0, capacity=32)</code></p>
+<p><a id='TensorFlow.train.shuffle_batch' href='#TensorFlow.train.shuffle_batch'>#</a>
+<strong><code>TensorFlow.train.shuffle_batch</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>shuffle_batch(tensors, batch_size; capacity=32, enqueue_many=false, shapes=nothing, dynamic_pad=false, allow_smaller_final_batch=false)</code></p>
+<p><a id='TensorFlow.train.QueueRunner' href='#TensorFlow.train.QueueRunner'>#</a>
+<strong><code>TensorFlow.train.QueueRunner</code></strong> &mdash; <em>Type</em>.</p>
+<p><code>QueueRunner</code></p>
+<p>Represents an object that continually enqueues elements to a TensorFlow queue in parallel with other operations.</p>
+<p><a id='TensorFlow.train.create_threads' href='#TensorFlow.train.create_threads'>#</a>
+<strong><code>TensorFlow.train.create_threads</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>create_threads(runner::QueueRunner, session::Session)</code></p>
+<p>Creates tasks that run the enqueue operations in <code>runner</code> in parallel.</p>
+<p><a id='Readers-1'></a></p>
+<h2 id="readers">Readers</h2>
+<div class="code"><pre><span></span>WholeFileReader
+TextLineReader
+read
 </pre></div>
-
-
-<p><a id='Functions-1'></a></p>
-<h2 id="functions">Functions</h2>
-<p><a id='Base.eltype' href='#Base.eltype'>#</a>
-<strong><code>Base.eltype</code></strong> &mdash; <em>Function</em>.</p>
-<div class="code"><pre><span></span>eltype(type)
-</pre></div>
-
-
-<p>Determine the type of the elements generated by iterating a collection of the given <code>type</code>. For associative collection types, this will be a <code>Pair{KeyType,ValType}</code>. The definition <code>eltype(x) = eltype(typeof(x))</code> is provided for convenience so that instances can be passed instead of types. However the form that accepts a type argument should be defined for new types.</p>
-<p><a id='TensorFlow.node_name' href='#TensorFlow.node_name'>#</a>
-<strong><code>TensorFlow.node_name</code></strong> &mdash; <em>Function</em>.</p>
-<p><code>node_name(node::AbstractOperation)</code></p>
-<p>Returns the name of a node in the computation graph.</p>
-<p><a id='TensorFlow.get_collection' href='#TensorFlow.get_collection'>#</a>
-<strong><code>TensorFlow.get_collection</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns a collection attached to the graph <code>g</code> named <code>name</code></p>
-<p>Returns a collection from the default graph</p>
-<p><a id='TensorFlow.get_def_graph' href='#TensorFlow.get_def_graph'>#</a>
-<strong><code>TensorFlow.get_def_graph</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns the default computation graph, an object of type <code>Graph</code>.</p>
-<p><a id='Base.run' href='#Base.run'>#</a>
-<strong><code>Base.run</code></strong> &mdash; <em>Function</em>.</p>
-<div class="code"><pre><span></span>run(command)
-</pre></div>
-
-
-<p>Run a command object, constructed with backticks. Throws an error if anything goes wrong, including the process exiting with a non-zero status.</p>
-<p><a id='TensorFlow.get_node_by_name' href='#TensorFlow.get_node_by_name'>#</a>
-<strong><code>TensorFlow.get_node_by_name</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns an operation by searching for its name in the given graph.</p>
-<p><a id='TensorFlow.get_shape' href='#TensorFlow.get_shape'>#</a>
-<strong><code>TensorFlow.get_shape</code></strong> &mdash; <em>Function</em>.</p>
-<p>Runs shape inference to return the shape of the tensor produced by the given operation.</p>
-<p>Returns -1 if shape inference cannot infer a shape.</p>
-<p>Note this runs <em>statically</em>. Use the <code>shape</code> operation to dynamically get the shape of an operation.</p>
-<p><a id='TensorFlow.get_def' href='#TensorFlow.get_def'>#</a>
-<strong><code>TensorFlow.get_def</code></strong> &mdash; <em>Function</em>.</p>
-<p>Returns the definition of the given operation or graph</p>
           <aside class="copyright" role="note">
             
               Copyright (c) 2016 Jonathan Malmaud &ndash;
@@ -398,7 +399,7 @@ Graph
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../io/" title="Using queues for loading your data">
+        <a href="../ops/" title="Operations">
           <span class="direction">
             Previous
           </span>
@@ -408,7 +409,7 @@ Graph
             </div>
             <div class="stretch">
               <div class="title">
-                Using queues for loading your data
+                Operations
               </div>
             </div>
           </div>
@@ -417,14 +418,14 @@ Graph
     </div>
     <div class="next">
       
-        <a href="../ops/" title="Operations">
+        <a href="../basic_usage/" title="Basic usage">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Operations
+                Basic usage
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">
