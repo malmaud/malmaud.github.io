@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     
       
-        <title>Basic usage - TensorFlow.jl</title>
+        <title>Shape inference - TensorFlow.jl</title>
       
       
       
@@ -95,12 +95,12 @@
           <span class="path">
             
               
-                Examples <i class="icon icon-link"></i>
+                Manual <i class="icon icon-link"></i>
               
             
           </span>
         
-        Basic usage
+        Shape inference
       </div>
     </div>
     
@@ -220,9 +220,14 @@
       
         
   <li>
-    <a class="" title="Shape inference" href="../shape_inference/">
+    <a class="current" title="Shape inference" href="./">
       Shape inference
     </a>
+    
+      
+        
+      
+      
     
   </li>
 
@@ -274,14 +279,9 @@
       
         
   <li>
-    <a class="current" title="Basic usage" href="./">
+    <a class="" title="Basic usage" href="../basic_usage/">
       Basic usage
     </a>
-    
-      
-        
-      
-      
     
   </li>
 
@@ -323,22 +323,10 @@
       <article class="article">
         <div class="wrapper">
           
-          <p><a id='Basic-usage-1'></a></p>
-<h1 id="basic-usage">Basic usage</h1>
-<div class="code"><pre><span></span><span class="k">using</span> <span class="n">TensorFlow</span>
-
-<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">constant</span><span class="p">(</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="kt">Float64</span><span class="p">)</span>
-
-<span class="n">w</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">z</span> <span class="o">+</span> <span class="o">-</span><span class="n">y</span><span class="p">)</span>
-
-<span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">initialize_all_variables</span><span class="p">())</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">Dict</span><span class="p">(</span><span class="n">z</span><span class="o">=&gt;</span><span class="kt">Float64</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
-<span class="p">@</span><span class="n">test</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">≈</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
+          <p><a id='Shape-inference-1'></a></p>
+<h1 id="shape-inference">Shape inference</h1>
+<p>Shape inference allows you to statically query the shape of a tensor before the computation graph has been run. This lets you verify that tensors have their expected shape. Invoke it by calling <code>get_shape</code> on a <code>Tensor</code> object.</p>
+<p>The Python API to TensorFlow implements shape inference in the Python layer. As it is not part of the C layer, it has been partially reimplemented in Julia. The Julia implementation supports shape inference most of the common operations. Contributing to shape inference is easy and pull requests are welcome - just look at the self-contained "shape_inference.jl" file for examples.</p>
           <aside class="copyright" role="note">
             
               Copyright (c) 2016 Jonathan Malmaud &ndash;
@@ -357,7 +345,7 @@
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../io_ref/" title="IO pipelines with queues">
+        <a href="../io/" title="Using queues for loading your data">
           <span class="direction">
             Previous
           </span>
@@ -367,7 +355,7 @@
             </div>
             <div class="stretch">
               <div class="title">
-                IO pipelines with queues
+                Using queues for loading your data
               </div>
             </div>
           </div>
@@ -376,14 +364,14 @@
     </div>
     <div class="next">
       
-        <a href="../logistic/" title="Logistic regression">
+        <a href="../core/" title="Core functions">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Logistic regression
+                Core functions
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

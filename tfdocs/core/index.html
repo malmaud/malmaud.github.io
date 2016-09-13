@@ -218,6 +218,15 @@
   </li>
 
       
+        
+  <li>
+    <a class="" title="Shape inference" href="../shape_inference/">
+      Shape inference
+    </a>
+    
+  </li>
+
+      
     </ul>
   </li>
 
@@ -335,13 +344,18 @@
 <p><a id='Types-1'></a></p>
 <h2 id="types">Types</h2>
 <p>The computation graph as a whole is stored in the <code>Graph</code> type. Individual nodes in the graph are referred to as operations, stored in the <code>Operation</code> type. Operations can produce one or more outputs, represented as the <code>Tensor</code> type.</p>
-<div class="code"><pre><span></span>Tensor
-Operation
-Session
-Graph
-</pre></div>
-
-
+<p><a id='TensorFlow.Tensor' href='#TensorFlow.Tensor'>#</a>
+<strong><code>TensorFlow.Tensor</code></strong> &mdash; <em>Type</em>.</p>
+<p>Represents the output of an operation in the computation graph</p>
+<p><a id='TensorFlow.Operation' href='#TensorFlow.Operation'>#</a>
+<strong><code>TensorFlow.Operation</code></strong> &mdash; <em>Type</em>.</p>
+<p>An operation in the computation graph.</p>
+<p><a id='TensorFlow.Session' href='#TensorFlow.Session'>#</a>
+<strong><code>TensorFlow.Session</code></strong> &mdash; <em>Type</em>.</p>
+<p>A TensorFlow session.</p>
+<p><a id='TensorFlow.Graph' href='#TensorFlow.Graph'>#</a>
+<strong><code>TensorFlow.Graph</code></strong> &mdash; <em>Type</em>.</p>
+<p>A TensorFlow computation graph</p>
 <p><a id='Functions-1'></a></p>
 <h2 id="functions">Functions</h2>
 <p><a id='Base.eltype' href='#Base.eltype'>#</a>
@@ -372,10 +386,9 @@ Graph
 <p><a id='TensorFlow.get_node_by_name' href='#TensorFlow.get_node_by_name'>#</a>
 <strong><code>TensorFlow.get_node_by_name</code></strong> &mdash; <em>Function</em>.</p>
 <p>Returns an operation by searching for its name in the given graph.</p>
-<p><a id='TensorFlow.get_shape' href='#TensorFlow.get_shape'>#</a>
-<strong><code>TensorFlow.get_shape</code></strong> &mdash; <em>Function</em>.</p>
+<p><a id='TensorFlow.ShapeInference.get_shape' href='#TensorFlow.ShapeInference.get_shape'>#</a>
+<strong><code>TensorFlow.ShapeInference.get_shape</code></strong> &mdash; <em>Function</em>.</p>
 <p>Runs shape inference to return the shape of the tensor produced by the given operation.</p>
-<p>Returns -1 if shape inference cannot infer a shape.</p>
 <p>Note this runs <em>statically</em>. Use the <code>shape</code> operation to dynamically get the shape of an operation.</p>
 <p><a id='TensorFlow.get_def' href='#TensorFlow.get_def'>#</a>
 <strong><code>TensorFlow.get_def</code></strong> &mdash; <em>Function</em>.</p>
@@ -398,7 +411,7 @@ Graph
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../io/" title="Using queues for loading your data">
+        <a href="../shape_inference/" title="Shape inference">
           <span class="direction">
             Previous
           </span>
@@ -408,7 +421,7 @@ Graph
             </div>
             <div class="stretch">
               <div class="title">
-                Using queues for loading your data
+                Shape inference
               </div>
             </div>
           </div>
