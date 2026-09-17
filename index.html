@@ -9,6 +9,7 @@
 :root {
   --bg: #fdfdfc;
   --fg: #1a1a18;
+  --muted: #6b6b66;
   --rule: #e2e2dd;
   --accent: #0b5fa5;
 }
@@ -16,6 +17,7 @@
   :root {
     --bg: #14140f;
     --fg: #ecece6;
+    --muted: #9a9a92;
     --rule: #2e2e28;
     --accent: #7fb2e5;
   }
@@ -36,10 +38,25 @@ body {
 }
 main { width: 100%; max-width: 32rem; }
 h1 {
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.35rem;
   font-size: 1.75rem;
   font-weight: 600;
   letter-spacing: -0.015em;
+}
+.role {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+.bio {
+  margin: 0 0 1.75rem;
+}
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
 }
 ul {
   margin: 0;
@@ -66,6 +83,13 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 <body>
 <main>
   <h1>Jonathan Malmaud</h1>
+  <p class="role">Senior Research Engineer, Google DeepMind &middot; Mountain View, California</p>
+  <p class="bio">Works on Gemini&rsquo;s code AI capabilities &mdash; fine-tuning, data curation,
+    evaluation, and prototyping methods from the literature for applying large language
+    models to software engineering. Previously worked on neural network quantization and
+    AI for software engineering at Google, with earlier research internships at IBM and
+    Google. Studied at MIT.</p>
+  <h2>Elsewhere</h2>
   <ul>
     <li><a href="https://github.com/malmaud">GitHub</a></li>
     <li><a href="https://github.com/malmaud/TensorFlow.jl">TensorFlow.jl</a></li>
